@@ -16,34 +16,35 @@ _
 
 | Name | GitHub username | Preferred contact | Usual availability |
 |------|-----------------|-------------------|--------------------|
-|      |                 |                   |                    |
-|      |                 |                   |                    |
-|      |                 |                   |                    |
-|      |                 |                   |                    |
+|Jonah Parker      |parke5js                 |Discord                   |Anytime after 4                    |
+|Devon Hurley      |spyepic222                 |Discord                   |8:30 pm onward                    |
+|Liam Irwin      |liam278123                 |Discord                   |Evenings and night                    |
+|Mark Fortune     |markf135                 |Discord                   |                    |
+|Jack Moore     |nojohns137                 |Discord                   |                    |
 
 ### Scrum Master
 
-**Sprint 1 Scrum Master:** _
+**Sprint 1 Scrum Master:** Jonah Parker
 
-**Does the role rotate?** *(e.g., rotates each sprint in the order listed above; or one person for the whole project)*
+**Does the role rotate?** Rotates each sprint
 
 _
 
 ### Product Owner
 
-*Choose one team member who will interact with the instructor (stakeholder) to clarify and prioritize stories, and to collect new ones.*
+Devon Hurley
 
 _
 
 ### Other Responsibilities
 
-Who is responsible for maintaining the project board / backlog in good order? *(Scrum Master?)*
+Who is responsible for maintaining the project board / backlog in good order? Current Scrum Master
 
-Who is responsible for deploying the main branch to production to update GitHub pages?
+Who is responsible for deploying the main branch to production to update GitHub pages? Liam Irwin
 
 ### Decision Making
 
-*(How do we decide things: consensus, majority vote, Scrum Master decides? What happens if we are deadlocked?)*
+*(How do we decide things: consensus, majority vote, Scrum Master decides? What happens if we are deadlocked?)* Come to a group consensus, if that doesn't work majority, if that doesn't work Scrum Master
 
 _
 
@@ -94,17 +95,17 @@ _
 
 ### Estimation
 
-**Method:** *(story points, t-shirt sizes, hours)*
+**Method:** Story points
 
-**Scale:** *(e.g., 1, 2, 3, 5, 8, 13)*
+**Scale:** Scale of 1, 2, 3, 5, 8, 13, ? (? means unsure)
 
 _
 
 ### Backlog and Board
 
-**Where the backlog lives:** *(e.g., GitHub Projects board, link here)*
+**Where the backlog lives:** GitHub issues
 
-**Board columns:** *(e.g., To Do → In Progress → In Review → Done)*
+**Board columns:** To Do → In Progress → In Review → Done
 
 _
 
@@ -114,26 +115,27 @@ _
 
 ### Primary Channel
 
-**Channel:** *(Discord, Slack, GroupMe, ...)*
+**Channel:** Discord
 
-**Expected response time:** *(e.g., within 12 hours on weekdays)*
+**Expected response time:** Within 12 hours on weekdays
 
 ### What Goes Where
 
-*(What is discussed in the chat channel vs. in GitHub issues vs. in PR comments?)*
+Chat channel is general things, GitHub issues channel for issue discussion
 
 _
 
 ### Reporting Blockers or Falling Behind
 
 *(How and how early does a member tell the team they are stuck or behind?)*
+After an hour of being stuck
 
 _
 
 ### Absences
 
 *(How much notice is required? How is the absent member's work covered?)*
-
+A days notice, split their work between everyone
 _
 
 ---
@@ -142,12 +144,13 @@ _
 
 ### Branch Naming
 
-**Format:** *(e.g., `type/issue-short-description`)*
+**Format:** `type/issue-short-description`
 
-**Allowed types:** *(e.g., `feature`, `fix`, `docs`, `refactor`, `test`, `chore`)*
+**Allowed types:** `feature`, `fix`, `docs`, `refactor`, `test`, `chore`
 
 **Examples:**
-
+feature/health-bar
+fix/volume-control
 -
 -
 
@@ -160,35 +163,34 @@ _
 
 ### Commit Messages
 
-*(Format and style, e.g., imperative mood: "Add rune puzzle validation". Do we follow Conventional Commits?)*
-
+Short clear description of what the commit does
 _
 
 ### Pull Requests
 
-**Maximum size:** *(e.g., aim for under 300 changed lines)*
+**Maximum size:** aim for under 300 changed lines
 
-**Description template:** *(e.g., What / Why / How to test / Screenshot)*
+**Description template:** What / Why / How to test / Screenshot
 
-**Linking issues:** *(e.g., every PR includes `Closes #N`)*
+**Linking issues:** every PR includes `Closes #N`
 
 _
 
 ### Code Review
 
-**Review turnaround:** *(e.g., within 24 hours of being requested)*
+**Review turnaround:** within 24 hours of being requested
 
-**Who reviews what:** *(e.g., any teammate; or a rotating assignment)*
+**Who reviews what:** any teammate
 
 _
 
 ### Merging
 
-**Merge style:** *(merge commit, squash and merge, or rebase and merge)*
+**Merge style:** squash and merge
 
-**Who merges:** *(the author after approval, or the reviewer)*
+**Who merges:** the author after approval
 
-**After merge:** *(e.g., delete the branch)*
+**After merge:** delete the branch
 
 _
 
@@ -200,23 +202,23 @@ _
 
 | Kind | Convention | Example |
 |------|------------|---------|
-| Variables and functions | | |
-| Classes | | |
-| Constants | | |
-| Files | | |
-| Test files | | |
+| Variables and functions |Camel Case |healthBar |
+| Classes |Upper Camel Case |RunePuzzle |
+| Constants |All Upper Case |MULTIPLIER |
+| Files |Upper Camel Case |Attack.js |
+| Test files |Upper Camel Case + Test |AttackTest.js |
 
 ### Formatting
 
-**Indentation:** *(2 spaces, 4 spaces, tabs)*
+**Indentation:** tabs
 
-**Semicolons:** *(always / never)*
+**Semicolons:** always
 
-**Quotes:** *(single / double)*
+**Quotes:** double, single for one character
 
-**Maximum line length:** _
+**Maximum line length:** 80
 
-**Tools:** *(e.g., Prettier and ESLint, with config files committed to the repo)*
+**Tools:** Not sure
 
 _
 
@@ -243,12 +245,14 @@ spec/
 ### Comments and Documentation
 
 *(When are comments or JSDoc required?)*
+Comment anything that is convenient to have a quick understanding of something
+JSDoc for a complicated method
 
 _
 
 ### Assets
 
-**File naming:** *(e.g., all lowercase, hyphens, no spaces)*
+**File naming:** all lowercase, hyphens, no spaces, category of asset first
 
 **Licensing and attribution:** *(Where do we record the source and license of art, sound, and fonts we did not make?)*
 
@@ -260,23 +264,23 @@ _
 
 **Test framework:** Jasmine
 
-**Where tests live:** _
+**Where tests live:** _ Not sure
 
-**What must have tests:** *(e.g., all model code; every bug fix gets a test that reproduces it; combat and puzzle rules)*
+**What must have tests:** all model code; every bug fix gets a test that reproduces it; combat and puzzle rules
 
 _
 
 **Coverage expectations:** 90+%
 
-**Continuous integration:** *(What does GitHub Actions run on each PR?)*
+**Continuous integration:** (What does GitHub Actions run on each PR?)
 
 _
 
-**Rule for failing CI:** *(e.g., nothing merges while CI is red)*
+**Rule for failing CI:** Manually go through and merge
 
 _
 
-**Manual playtesting:** *(Who plays the build before each sprint review, and how are bugs reported?)*
+**Manual playtesting:** Can find anyone to test, bugs reported in discord channel
 
 _
 
@@ -286,27 +290,27 @@ _
 
 **Where the game is deployed:** GitHub Pages, URL here
 
-**What triggers a deploy:** *(e.g., a release PR from `main` into `production`, opened by the Scrum Master after each sprint review)*
+**What triggers a deploy:** a release PR from `main` into `production`, opened by the Scrum Master after each sprint review
 
-**Who checks the deployed build, and when:** _
+**Who checks the deployed build, and when:** _ We'll decide at that time
 
 ---
 
 ## 8. AI Tool Usage
 
-**Allowed tools:** _
+**Allowed tools:** _ Copilot
 
-**Allowed uses:** *(e.g., code generation, tests, documentation, review)*
-
-_
-
-**Not allowed:** _
-
-**Disclosure:** *(e.g., note AI assistance in the PR description)*
+**Allowed uses:** review, explanation, frameworks, simple logic
 
 _
 
-**Responsibility:** *(e.g., whoever submits AI-generated code must understand it and is accountable for it)*
+**Not allowed:** _ AI art/music
+
+**Disclosure:** note AI assistance in the PR description
+
+_
+
+**Responsibility:** whoever submits AI-generated code must understand it and is accountable for it
 
 _
 
@@ -316,13 +320,13 @@ _
 
 ### Expected Effort
 
-*(Hours per person per week.)*
+3 hours per person per week
 
 _
 
 ### Fair Contribution
 
-*(What counts as contributing, and how is it tracked? e.g., PRs merged, reviews done, story points completed.)*
+If you can finish majority what is assigned during meetings
 
 _
 
@@ -330,20 +334,21 @@ _
 
 *(What steps do we follow when there is a disagreement or a problem with a teammate?)*
 
-1. *(e.g., talk to the person directly)*
-2. *(e.g., raise it at the retrospective)*
-3. *(e.g., Scrum Master mediates)*
-4. *(e.g., escalate to the instructor)*
+1. talk to the person directly
+2. raise it at the retrospective
+3. Scrum Master mediates
+4. escalate to the instructor
 
 ### Missed Commitments
 
 *(What happens when a member repeatedly misses commitments?)*
+Talk to them and instructor if needed
 
 _
 
 ### Amending This Constitution
 
-*(How can this document be changed? e.g., proposed by PR, approved by team vote at a retrospective.)*
+Discuss it all together to decide any changes
 
 _
 
@@ -355,7 +360,8 @@ _
 
 | GitHub name | Signature (type your name) | Date |
 |------|----------------------------|------|
-|      |                            |      |
-|      |                            |      |
-|      |                            |      |
-|      |                            |      |
+|parke5js      |Jonah Parker                            |10/28/26      |
+|spyepic222      |Devin Hurley                            |10/28/26       |
+|liam278123      |Liam Irwin                            |10/28/26       |
+|markf135      |Mark Fortune                            |10/28/26       |
+|nojohns137    |Jack Moore                            |10/28/26       |
