@@ -21,4 +21,7 @@ jobs:
           summary=$(grep -o 'jasmine-overall-result[^>]*>[^<]*'results.html | sed 's/.*>//')echo "Jasmine: ${summary:-no result found}"
 
           # Name and message of each failing spec
-          perl -0ne 'while (/<div class="jasmine-spec-detail jasmine-failed">.*?<div class="jasmine-description">(.*?)<\/div>.*?<div class="jasmine-result-message">(.*?)<\/div>/gs) {my ($d, $m) = ($1, $2); $d =~ s/<[^>]+>//g; $d =~
+          perl -0ne 'while (/<div class="jasmine-spec-detail jasmine-failed">.*?<div class="jasmine-description">(.*?)<\/div>.*?<div class="jasmine-result-message">(.*?)<\/div>/gs) {my ($d, $m) = ($1, $2); $d =~ s/&gt;/>/g; 
+          print "FAILED: $d\n $m\n" }' results.html
+          grep -q 'jasmine-overall-result[^"]*jasmine-passed'
+          results.html
