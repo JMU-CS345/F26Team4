@@ -1,10 +1,27 @@
+let currentScreen = "mainMenu";
+let newButton;
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(500, 500);
+  newButton = createButton("PLAY");
+  newButton.position(100, 100);
+  newButton.mousePressed(buttonPressedAction);
 }
 
 function draw() {
-  background(220);
-  fill(255,0,0);
-  circle(200,200,50);
-  draw2();
+  if (currentScreen === "mainMenu") {
+    background(220);
+  }
+  if (currentScreen === "mageSelect") {
+    newButton.remove();
+    background(0, 0, 0);
+    mageSelectMenu();
+  }
 }
+
+function buttonPressedAction() {
+  currentScreen = "mageSelect";
+}
+
+
+

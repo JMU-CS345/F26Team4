@@ -1,10 +1,9 @@
 let fireButton;
 let iceButton;
 let mindButton;
+let mageType;
 
-function setup() {
-    createCanvas(500, 500);
-    background(0,0,0);
+function mageSelectMenu() {
     fireButton = createButton("Fire Mage");
     fireButton.position(25, 350);
     fireButton.mousePressed(buttonPressedAction);
@@ -31,13 +30,20 @@ function setup() {
     mindButton.style('color', 'black');
     mindButton.style('font-size', '16px');
     mindButton.style('border', 'none');
-
 }
 
 function buttonPressedAction() {
     let randomColor = color(random(255), random(255), random(255));
     fill(randomColor);
-    circle(100,100,50);
+    circle(100, 100, 50);
     console.log("Button clicked!");
+    fireButton.mousePressed(() => selectMage("fire"));
+    iceButton.mousePressed(() => selectMage("ice"));
+    mindButton.mousePressed(() => selectMage("mind"));
+}
+
+function selectMage(type) {
+    mageType = type;
+    console.log("Selected:", mageType);
 }
 
