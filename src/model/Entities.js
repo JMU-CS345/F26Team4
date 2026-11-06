@@ -4,6 +4,13 @@ const MageClass = Object.freeze({
     MINDMAGE: "mind"
 });
 
+const EnemiesClass = Object.freeze({
+    GOBLIN: "goblin",
+    SKELETON: "skeleton",
+    EVILMAGE: "evil-mage",
+    GHOST: "ghost"
+});
+
 const MAGE_CLASS_STATS = Object.freeze({
     [MageClass.FIREMAGE]: Object.freeze({
         health: 100,
@@ -25,13 +32,43 @@ const MAGE_CLASS_STATS = Object.freeze({
     })
 });
 
+const ENEMY_STATS = Object.freeze({
+    [EnemiesClass.GOBLIN]: Object.freeze({
+        name: "Goblin",
+        health: 50,
+        attackPower: 8,
+        spellPower: 0
+    }),
+    [EnemiesClass.SKELETON]: Object.freeze({
+        name: "Skeleton",
+        health: 75,
+        attackPower: 12,
+        spellPower: 0
+    }),
+    [EnemiesClass.EVILMAGE]: Object.freeze({
+        name: "Evil Mage",
+        health: 80,
+        attackPower: 8,
+        spellPower: 18
+    }),
+    [EnemiesClass.GHOST]: Object.freeze({
+        name: "Ghost",
+        health: 60,
+        attackPower: 10,
+        spellPower: 15
+    })
+});
+
 class Entity {
-    constructor({ name = "Entity", health, attackPower, spellPower, xpos = 0, ypos = 0 }) {
+    constructor({ name, health, mana, attackPower, spellPower, xpos = 0, ypos = 0 }) {
         this.name = name;
         this.xpos = xpos;
         this.ypos = ypos;
         this.health = health;
         this.maxHealth = health;
+        if (mana !== undefined) {
+            this.mana = mana;
+        }
         this.attackPower = attackPower;
         this.spellPower = spellPower;
     }
@@ -56,11 +93,25 @@ class Entity {
 }
 
 class Player extends Entity {
-    constructor(mageClass = MageClass.FIREMAGE, name = "Mage") {
+    constructor(mageClass, name = "Mage") {
         const stats = MAGE_CLASS_STATS[mageClass];
+        if (!stats) {
+            throw new RangeError(`Unknown mage class`);
+        }
 
         super({ name, ...stats });
         this.mageClass = mageClass;
-        this.mana = stats.mana;
+    }
+}
+
+class Enemy extends Entity {
+    constructor(enemyClass, xpos = 0, ypos = 0) {
+        const stats = ENEMY_STATS[enemyClass];
+        if (!stats) {
+            throw new RangeError(`Unknown enemy class`);
+        }
+
+        super({ ...stats, xpos, ypos });
+        this.enemyClass = enemyClass;
     }
 }
