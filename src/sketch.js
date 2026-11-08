@@ -1,21 +1,33 @@
 let player;
 let playerController;
+let playerView;
+let wallView;
+let level;
 
 function setup() {
   createCanvas(800, 600);
 
-  player = new Player();
+  const walls = [
+    new Wall(200, 150, 300, 25),
+    new Wall(500, 300, 25, 180),
+    new Wall(150, 400, 200, 25)
+  ];
+
+  level = new Level(width, height, walls);
+  player = new Player(100, 100);
   playerController = new PlayerController(player);
+  playerView = new PlayerView();
+  wallView = new WallView();
 }
 
 function draw() {
   background(220);
 
-  playerController.update();
+  playerController.update(level);
 
-  // Keep the player inside the canvas.
-  player.x = constrain(player.x, player.radius, width - player.radius);
-  player.y = constrain(player.y, player.radius, height - player.radius);
+  for (const wall of level.walls) {
+    wallView.draw(wall);
+  }
 
-  circle(player.x, player.y, player.radius * 2);
+  playerView.draw(player);
 }
