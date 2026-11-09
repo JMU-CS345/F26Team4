@@ -27,4 +27,25 @@ class WorldObject {
         this.collidable = collidable;
         this.interactable = interactable;
     }
+
+    collidesWithCircle(circleX, circleY, radius) {
+        const closestX = Math.max(this.xpos, Math.min(circleX, this.xpos + this.width));
+        const closestY = Math.max(this.ypos, Math.min(circleY, this.ypos + this.height));
+        const distanceX = circleX - closestX;
+        const distanceY = circleY - closestY;
+
+        return distanceX * distanceX + distanceY * distanceY < radius * radius;
+    }
+}
+
+class Wall extends WorldObject {
+    constructor(x, y, width, height) {
+        super({
+            name: "Wall",
+            xpos: x,
+            ypos: y,
+            width,
+            height
+        });
+    }
 }
