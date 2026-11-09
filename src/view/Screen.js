@@ -58,7 +58,7 @@ function drawMageSelect() {
 
 }
 
-function drawMainGame() {
+/*function drawMainGame() {
     fireButton.hide();
     iceButton.hide();
     mindButton.hide();
@@ -77,7 +77,7 @@ function drawMainGame() {
 
     textSize(32);
     text("Game is running", width / 2, height / 2);
-}
+} */
 
 
 
@@ -86,6 +86,7 @@ function selectMage(type) {
     fireButton.hide();
     iceButton.hide();
     mindButton.hide();
+    setupMovement();
     gameState = "game";
     console.log("Selected:", mageType);
 }

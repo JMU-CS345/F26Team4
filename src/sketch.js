@@ -4,7 +4,7 @@ let playerView;
 let wallView;
 let level;
 
-function setup() {
+function setupMovement () {
   createCanvas(800, 600);
 
   const walls = [
@@ -20,7 +20,7 @@ function setup() {
   wallView = new WallView();
 }
 
-function draw() {
+function drawMainGame() {
   background(220);
 
   playerController.update(level);
