@@ -101,6 +101,7 @@ class Player extends Entity {
 
         super({ name, ...stats });
         this.mageClass = mageClass;
+        this
     }
 }
 
