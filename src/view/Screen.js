@@ -1,63 +1,52 @@
-let titleSize = 45;
-let titleAngle = 0;
-let titleIncrease = true;
-let titleRotate = true;
 
 function drawTitleScreen() {
-    for (let y = 0; y < height; y++) {
-        n = map(y, 0, height, 0, 1);
-        let newColor = lerpColor(color(161, 52, 235), color(225, 70, 255), n);
-        stroke(newColor);
-        line(0, y, width, y);
-    }
-
-
-    push();
-    angleMode(DEGREES);
+    background(150, 0, 150);
     textAlign(CENTER, CENTER);
-    translate(width / 2, height / 3);
 
-    if (titleSize >= 55) {
-        titleIncrease = false;
-    } else if (titleSize <= 45) {
-        titleIncrease = true;
-    }
+    textSize(48);
+    text("MageQuest", width / 2, height / 3);
 
-    if (titleIncrease) {
-        titleSize += 0.4;
-    } else {
-        titleSize -= 0.4;
-    }
-
-    if (titleAngle >= 10) {
-        titleRotate = false;
-    } else if (titleAngle <= -10) {
-        titleRotate = true;
-    }
-
-    if(titleRotate) {
-        rotate(titleAngle += 0.2);
-    } else {
-        rotate(titleAngle -= 0.2);
-    }
-    
-    textSize(titleSize);
-    textFont("Georgia")
-    fill(200, 20, 240); 
-    stroke(50, 20, 100);
-    strokeWeight(6);
-    text("MageQuest", 0, 0);
-    pop();
+    textSize(18);
+    text("Click START to begin", width / 2, height / 2);
 }
 
 function drawMageSelect() {
-    background(150, 0, 150);
+    background(150, 0, 0);
+    textAlign(CENTER, CENTER);
+
+    textSize(48);
+    text("Choose a Mage Type", width / 2, height / 3);
+
 }
 
 function drawMainGame() {
-    background(50, 150, 100);
+    fireButton.hide();
+    iceButton.hide();
+    mindButton.hide();
+
+    if (mageType === "fire") {
+        background(199, 38, 6);
+    }
+    else if (mageType === "ice") {
+        background(45, 247, 244);
+    }
+    else {
+        background(209, 33, 222);
+    }
+
     textAlign(CENTER, CENTER);
 
     textSize(32);
     text("Game is running", width / 2, height / 2);
+}
+
+
+
+function selectMage(type) {
+    mageType = type;
+    fireButton.hide();
+    iceButton.hide();
+    mindButton.hide();
+    gameState = "game";
+    console.log("Selected:", mageType);
 }
