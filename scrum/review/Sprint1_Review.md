@@ -10,11 +10,11 @@
 
 **Scrum Master:** _ Jonah Parker
 
-**Attendees:** _ Mark, Jack, Devon, Liam
+**Attendees:** _ Jonah, Mark, Jack, Devon, Liam
 
 **Absent:** _ n/a
 
-**Presenter:** Devon
+**Presenter:** Liam
 
 **Deployed build reviewed:** *(GitHub Pages URL)*
 
@@ -30,7 +30,7 @@
 
 **Did we meet it?** *(Yes / Partly / No, and one sentence explaining why)*
 
-_
+_  Yes, we got a working title screen that leads into a mage select screen that leads into a character moving around in an environment.
 
 ---
 
@@ -42,10 +42,10 @@ _
 
 | Issue # | User story | Estimate | Owner | Done? | Built by |
 |---------|------------|----------|-------|-------|----------|
-|    1     |    Player Movement        |    2      |   Mark    |  X     |           |
+|    1     |    Player Movement        |    2      |   Mark    |  X     |  Liam         |
 |    6     |   Title Screen         |    5      |  Jonah     |   X    |   Jonah        |
 |    8     |    Mage Type        |    3      |   Devon    |  X     |    Devon       |
-|    23     |    Collision with walls        |    5      |  Liam     |  X     |           |
+|    23     |    Collision with walls        |    5      |  Liam     |  X     |    Liam       |
 |         |            |          |       |       |           |
 
 ---
@@ -54,20 +54,19 @@ _
 
 | | Points |
 |---|---|
-| Committed | |
-| Completed | |
-| Completion rate | % |
+| Committed | 15 |
+| Completed | 15 |
+| Completion rate | 100% |
 
 **Velocity history:**
 
 | Sprint | Committed | Completed |
 |--------|-----------|-----------|
-| 1      |           |           |
+| 1      |    15       |    15       |
 | 2      |           |           |
 | 3      |           |           |
 | 4      |           |           |
 
-**Burndown or board snapshot:** *(Attach a screenshot or link)*
 
 **What explains the difference between committed and completed?** _
 
@@ -106,9 +105,9 @@ _
 
 ## 7. Stakeholder Feedback
 
-*Record what the instructor said: what they liked, what should change, and any new priorities. (Sprint 4: write "n/a")*
+*Record what the instructor said: what they liked, what should change, and any new priorities. (Sprint 4: write "n/a")* 
 
-_
+_   They liked the wobbling title screen, they want to see differences between the mages to make it seem more like an RPG character with different hitpoints, etc.
 
 ---
 

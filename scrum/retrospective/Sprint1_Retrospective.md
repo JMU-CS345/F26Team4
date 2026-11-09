@@ -6,19 +6,19 @@
 
 ## 1. Meeting Details
 
-**Date:** _
+**Date:** _ 11/9/26
 
-**Facilitator:** _
+**Facilitator:** _ Jonah
 
-**Attendees:** _
+**Attendees:** _ Jonah, Devon, Liam, Mark, Jack
 
-**Absent:** _
+**Absent:** _ n/a
 
 ---
 
 ## 2. Last Sprint's Action Items
 
-*Did we do what we said we would? Did it help? (Sprint 1: write "n/a")*
+*Did we do what we said we would? Did it help? (Sprint 1: write "n/a")* n/a
 
 | Action item | Owner | Done? | Did it help? |
 |-------------|-------|-------|--------------|
@@ -31,9 +31,9 @@
 
 *Use these to ground the discussion in evidence.*
 
-**Points committed / completed:** _ / _
+**Points committed / completed:** 15 / 15
 
-**PRs merged:** _
+**PRs merged:** _ 
 
 **CI runs failed / total:** _ / _ *(In your repo's **Actions** tab, count the runs from this sprint's dates. Use the **Status** filter to find the failed ones.)*
 
@@ -49,14 +49,14 @@
 
 ### What went well
 
--
--
--
+- The planning for the sprint went well with a good first step to the game and splitting up work between everyone.
+- The PRs were reviewed within 24 hours.
+- 
 
 ### What did not go well
 
--
--
+- Our work was not properly merged together into main and nothing was pushed into production by today
+- 
 -
 
 ### What puzzled us or what we want to try
