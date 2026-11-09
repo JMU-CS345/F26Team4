@@ -59,11 +59,20 @@ const ENEMY_STATS = Object.freeze({
     })
 });
 
-class Entity {
-    constructor({ name, health, mana, attackPower, spellPower, xpos = 0, ypos = 0 }) {
+class Entity extends MovableEntity {
+    constructor({
+        name,
+        health,
+        mana,
+        attackPower,
+        spellPower,
+        xpos = 0,
+        ypos = 0,
+        radius = 15,
+        speed = 3
+    }) {
+        super(xpos, ypos, radius, speed);
         this.name = name;
-        this.xpos = xpos;
-        this.ypos = ypos;
         this.health = health;
         this.maxHealth = health;
         if (mana !== undefined) {
@@ -93,26 +102,25 @@ class Entity {
 }
 
 class Player extends Entity {
-    constructor(mageClass, name = "Mage") {
+    constructor(mageClass, name = "Mage", xpos = 0, ypos = 0, radius = 15, speed = 3) {
         const stats = MAGE_CLASS_STATS[mageClass];
         if (!stats) {
             throw new RangeError(`Unknown mage class`);
         }
 
-        super({ name, ...stats });
+        super({ name, ...stats, xpos, ypos, radius, speed });
         this.mageClass = mageClass;
-        this
     }
 }
 
 class Enemy extends Entity {
-    constructor(enemyClass, xpos = 0, ypos = 0) {
+    constructor(enemyClass, xpos = 0, ypos = 0, radius = 15, speed = 3) {
         const stats = ENEMY_STATS[enemyClass];
         if (!stats) {
             throw new RangeError(`Unknown enemy class`);
         }
 
-        super({ ...stats, xpos, ypos });
+        super({ ...stats, xpos, ypos, radius, speed });
         this.enemyClass = enemyClass;
     }
 }
