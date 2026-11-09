@@ -60,10 +60,22 @@ const ENEMY_STATS = Object.freeze({
 });
 
 class Entity {
-    constructor({ name, health, mana, attackPower, spellPower, xpos = 0, ypos = 0 }) {
+    constructor({
+        name,
+        health,
+        mana,
+        attackPower,
+        spellPower,
+        xpos = 0,
+        ypos = 0,
+        radius = 15,
+        speed = 3
+    }) {
         this.name = name;
         this.xpos = xpos;
         this.ypos = ypos;
+        this.radius = radius;
+        this.speed = speed;
         this.health = health;
         this.maxHealth = health;
         if (mana !== undefined) {
@@ -71,6 +83,10 @@ class Entity {
         }
         this.attackPower = attackPower;
         this.spellPower = spellPower;
+    }
+
+    move(dx, dy, level) {
+        moveEntity(this, dx, dy, level, "xpos", "ypos");
     }
 
     get isAlive() {
@@ -93,15 +109,14 @@ class Entity {
 }
 
 class Player extends Entity {
-    constructor(mageClass, name = "Mage") {
+    constructor(mageClass, name = "Mage", xpos = 0, ypos = 0) {
         const stats = MAGE_CLASS_STATS[mageClass];
         if (!stats) {
             throw new RangeError(`Unknown mage class`);
         }
 
-        super({ name, ...stats });
+        super({ name, ...stats, xpos, ypos });
         this.mageClass = mageClass;
-        this
     }
 }
 

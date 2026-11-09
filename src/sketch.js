@@ -14,7 +14,7 @@ function setupMovement () {
   ];
 
   level = new Level(width, height, walls);
-  player = new Player(100, 100);
+  player = new Player(mageType, "Mage", 100, 100);
   playerController = new PlayerController(player);
   playerView = new PlayerView();
   wallView = new WallView();

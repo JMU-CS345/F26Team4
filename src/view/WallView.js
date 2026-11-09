@@ -1,6 +1,6 @@
 class WallView {
   draw(wall) {
     fill(80);
-    rect(wall.x, wall.y, wall.width, wall.height);
+    rect(wall.xpos, wall.ypos, wall.width, wall.height);
   }
 }
