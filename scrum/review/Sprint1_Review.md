@@ -16,9 +16,9 @@
 
 **Presenter:** Liam
 
-**Deployed build reviewed:** *(GitHub Pages URL)*
+**Deployed build reviewed:** (https://jmu-cs345.github.io/F26Team4/)
 
-**Release PR into `production`:** *(link; merge it before the review begins)*
+**Release PR into `production`:** (https://github.com/JMU-CS345/F26Team4/pull/37)
 
 ---
 
@@ -157,9 +157,9 @@ _   They liked the wobbling title screen, they want to see differences between t
 
 *Give the stakeholder an honest picture of the build's quality.*
 
-**CI status on `production`:** *(passing / failing)*
+**CI status on `production`:** Passing
 
-**Number of specs:** _ 0
+**Number of specs:** _ 5
 
 **Known bugs in the deployed build:** _ 0
 
