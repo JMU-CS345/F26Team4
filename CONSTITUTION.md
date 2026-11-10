@@ -361,7 +361,7 @@ _
 | GitHub name | Signature (type your name) | Date |
 |------|----------------------------|------|
 |parke5js      |Jonah Parker                            |10/28/26      |
-|spyepic222      |Devin Hurley                            |10/28/26       |
+|spyepic222      |Devon Hurley                            |10/28/26       |
 |liam278123      |Liam Irwin                            |10/28/26       |
 |markf135      |Mark Fortune                            |10/28/26       |
 |nojohns137    |Jack Moore                            |10/28/26       |

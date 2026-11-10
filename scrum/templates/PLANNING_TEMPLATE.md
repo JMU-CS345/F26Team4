@@ -8,9 +8,9 @@
 
 **Date:** _
 
-**Scrum Master:** _
+**Scrum Master:** _ 
 
-**Attendees:** _
+**Attendees:** _ 
 
 **Absent:** _
 
@@ -20,7 +20,7 @@
 
 *One or two sentences describing a playable outcome, not a list of tickets. e.g., "A player can create a character and enter the first dungeon."*
 
-_
+_ 
 
 ---
 
