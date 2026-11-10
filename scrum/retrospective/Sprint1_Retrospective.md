@@ -22,11 +22,11 @@
 
 | Action item | Owner | Done? | Did it help? |
 |-------------|-------|-------|--------------|
-|  Movement   |  Mark | yes   |      yes     |
-| Collisions  | Liam  |  yes  |     yes      |
-| Main menu   | Jonah |  yes  |   yes        |
-|Mage type menu | Devon | yes |    yes       |
-| Creature constructors | Jack | yes |  yes  |
+|     |   |    |           |
+|   |   |    |           |
+|     |  |    |           |
+|   |  |  |           |
+|   |  |  |    |
 
 ---
 

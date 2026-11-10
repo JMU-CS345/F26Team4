@@ -43,8 +43,8 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 | Issue # | User story | Estimate | Owner | Done? | Built by |
 |---------|------------|----------|-------|-------|----------|
 |    1     |    Player Movement        |    2      |   Mark    |  X     |  Liam         |
-|    6     |   Title Screen         |    5      |  Jonah     |      |   Jonah        |
-|    8     |    Mage Type        |    3      |   Devon    |       |    Devon       |
+|    6     |   Title Screen         |    5      |  Jonah     |  X    |   Jonah        |
+|    8     |    Mage Type        |    3      |   Devon    |  X     |    Devon       |
 |    23     |    Collision with walls        |    5      |  Liam     |  X     |    Liam       |
 |         |            |          |       |       |           |
 
@@ -55,21 +55,21 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 | | Points |
 |---|---|
 | Committed | 15 |
-| Completed | 7 |
-| Completion rate | 46% |
+| Completed | 15 |
+| Completion rate | 100% |
 
 **Velocity history:**
 
 | Sprint | Committed | Completed |
 |--------|-----------|-----------|
-| 1      |    15       |    7       |
+| 1      |    15       |    15       |
 | 2      |           |           |
 | 3      |           |           |
 | 4      |           |           |
 
 
 **What explains the difference between committed and completed?** _
-There were some acceptance criteria for the title screen and mage type that required the player to die / the run to end, which we do not have implemented. Other than that it works.
+
 
 ---
 
@@ -125,11 +125,10 @@ Then they cannot continue forward
 
 | Issue # | What remains | New estimate | Back in backlog? |
 |---------|--------------|--------------|------------------|
-|   6      |    When the players run ends, they are taken back to the title screen          |              | [ ]              |
-|   8      |   When the player dies, they can select a new mage type           |              | [ ]              |
+|   6      |    When the players run ends, they are taken back to the title screen          |     n/a         | [ ]              |
+|   8      |   When the player dies, they can select a new mage type           |    n/a          | [ ]              |
 
-These are more an issue with acceptance criteria not being fully accurate, as the issues pertain more to the player dying which is a different story.
-
+These are more an issue with acceptance criteria not being fully accurate, as the issues pertain more to the player dying which is a different story. The stories on their own work good.
 ---
 
 ## 7. Stakeholder Feedback
