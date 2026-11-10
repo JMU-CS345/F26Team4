@@ -43,8 +43,8 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 | Issue # | User story | Estimate | Owner | Done? | Built by |
 |---------|------------|----------|-------|-------|----------|
 |    1     |    Player Movement        |    2      |   Mark    |  X     |  Liam         |
-|    6     |   Title Screen         |    5      |  Jonah     |   X    |   Jonah        |
-|    8     |    Mage Type        |    3      |   Devon    |  X     |    Devon       |
+|    6     |   Title Screen         |    5      |  Jonah     |      |   Jonah        |
+|    8     |    Mage Type        |    3      |   Devon    |       |    Devon       |
 |    23     |    Collision with walls        |    5      |  Liam     |  X     |    Liam       |
 |         |            |          |       |       |           |
 
@@ -55,20 +55,21 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 | | Points |
 |---|---|
 | Committed | 15 |
-| Completed | 15 |
-| Completion rate | 100% |
+| Completed | 7 |
+| Completion rate | 46% |
 
 **Velocity history:**
 
 | Sprint | Committed | Completed |
 |--------|-----------|-----------|
-| 1      |    15       |    15       |
+| 1      |    15       |    7       |
 | 2      |           |           |
 | 3      |           |           |
 | 4      |           |           |
 
 
 **What explains the difference between committed and completed?** _
+There were some acceptance criteria for the title screen and mage type that required the player to die / the run to end, which we do not have implemented. Other than that it works.
 
 ---
 
@@ -78,17 +79,43 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 
 *Presenter: be ready to explain and answer questions about every completed story, including work you didn't build.*
 
-### Issue #_: *(story title)*
+### Issue #_: Player Movement
 
-- [ ] *(acceptance criterion)*
-- [ ] *(acceptance criterion)*
+- [X] Given the game is active and the player is in a scene
+When the player presses the up arrow button or the "w" key
+Then the player should move up
+- [X] Given the game is active and the player is in a scene
+When the player presses the left arrow button or the "a" key
+Then the player should move left
+- [X] Given the game is active and the player is in a scene
+When the player presses the right arrow button or the "d" key
+Then the player should move right
+- [X] Given the game is active and the player is in a scene
+When the player presses the down arrow button or the "s" key
+Then the player should move down
 
-### Issue #_: *(story title)*
+### Issue #_: Title Screen
 
-- [ ] *(acceptance criterion)*
-- [ ] *(acceptance criterion)*
+- [X] Given the player launches the game
+When the player presses start
+Then the run begins
+- [ ] Given the player ends their run
+When the player presses start
+Then the next run begins
 
-*(Repeat for each completed story.)*
+### Issue #_: Mage Type
+
+- [X] Given the player starts a new run,
+When they are given the option between a Fire mage, Ice Mage, and Mind Mage,
+The player can choose one and their sprite is updated.
+- [ ] Given the player dies,
+Their chosen mage is reset and they can pick a new type.
+
+### Issue #_: Collision
+
+- [X] Given the player is in the game
+When they run into a wall
+Then they cannot continue forward
 
 ---
 
@@ -98,8 +125,10 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 
 | Issue # | What remains | New estimate | Back in backlog? |
 |---------|--------------|--------------|------------------|
-|         |              |              | [ ]              |
-|         |              |              | [ ]              |
+|   6      |    When the players run ends, they are taken back to the title screen          |              | [ ]              |
+|   8      |   When the player dies, they can select a new mage type           |              | [ ]              |
+
+These are more an issue with acceptance criteria not being fully accurate, as the issues pertain more to the player dying which is a different story.
 
 ---
 
@@ -115,13 +144,13 @@ _   They liked the wobbling title screen, they want to see differences between t
 
 *How did the backlog change in response to the feedback? (Sprint 4: write "n/a")*
 
-**New stories added:** _
+**New stories added:** _ We didn't need to add more stories
 
-**Priorities changed:** _
+**Priorities changed:** _ We now know the next step should be to focus on the character
 
-**Stories removed:** _
+**Stories removed:** _ We didn't need to remove any stories
 
-**If no change was needed, why not?** _
+**If no change was needed, why not?** _ We already have stories outlining additions to the character like the stats and health bar.
 
 ---
 
@@ -131,20 +160,20 @@ _   They liked the wobbling title screen, they want to see differences between t
 
 **CI status on `production`:** *(passing / failing)*
 
-**Number of specs:** _
+**Number of specs:** _ 0
 
-**Known bugs in the deployed build:** _
+**Known bugs in the deployed build:** _ 0
 
 ---
 
 ## 10. Checklist
 
-- [ ] Demo given from the deployed GitHub Pages build
-- [ ] Demo given by one presenter, crediting the members who built each story
-- [ ] Release PR merged before the review begins
-- [ ] Every committed item marked Done or Not Done
-- [ ] Every item marked Done has all its acceptance criteria checked in section 5
-- [ ] Metrics filled in, with the committed/completed difference explained
-- [ ] Stakeholder feedback recorded (Sprint 4: n/a)
-- [ ] Backlog updated, or the reason no change was needed explained (Sprint 4: n/a)
-- [ ] Report committed to `scrum/review/` via pull request by 11:59 p.m. on the day of the review
+- [X] Demo given from the deployed GitHub Pages build
+- [X] Demo given by one presenter, crediting the members who built each story
+- [X] Release PR merged before the review begins
+- [X] Every committed item marked Done or Not Done
+- [X] Every item marked Done has all its acceptance criteria checked in section 5
+- [X] Metrics filled in, with the committed/completed difference explained
+- [X] Stakeholder feedback recorded (Sprint 4: n/a)
+- [X] Backlog updated, or the reason no change was needed explained (Sprint 4: n/a)
+- [X] Report committed to `scrum/review/` via pull request by 11:59 p.m. on the day of the review
