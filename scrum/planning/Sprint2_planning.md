@@ -34,11 +34,11 @@ _ When you start the game, you enter the first procedurally generated dungeon wi
 
 **Known absences or reduced availability this sprint:** _
 
-**Points committed this sprint:** _
+**Points committed this sprint:** _ 26
 
 **Why this commitment is realistic:** *(Compare it to your velocity and capacity. If you are committing more than last sprint's velocity, explain why.)*
 
-_
+_We didn't have any problems with meeting last sprint's workload, and now we have a framework to build off of and more knowledge on github and p5.js.
 
 ---
 
@@ -56,7 +56,7 @@ _
 
 **Total points:** _26
 
-**Notes:** _Hopefully its not too much but i believe in us
+**Notes:** _Hopefully its not too much but I believe in us.
 
 ---
 
