@@ -5,6 +5,7 @@ const GENERATED_ROOM_TYPE_COUNTS = Object.freeze({
     chest: 2,
     special: 2
 });
+const MAX_SEED_ATTEMPTS = 20;
 const NON_ADJACENT_ROOM_TYPES = new Set(["chest", "special"]);
 const OPPOSITE_ROOM_SIDE = Object.freeze({
     north: "south",
@@ -43,7 +44,17 @@ function createRoomTypes(random) {
     const generatedTypes = GENERATED_ROOM_TYPES.flatMap((type) =>
         Array(GENERATED_ROOM_TYPE_COUNTS[type]).fill(type)
     );
-    return ["start", ...shuffleWithSeededRandom(generatedTypes, random), "miniboss"];
+    const firstRoomType = generatedTypes.splice(generatedTypes.indexOf("chest"), 1)[0];
+    const remainingTypes = shuffleWithSeededRandom(generatedTypes, random);
+    const secondRoomIndex = remainingTypes.findIndex((type) => type !== "special");
+    const secondRoomType = remainingTypes.splice(secondRoomIndex, 1)[0];
+    return [
+        "start",
+        firstRoomType,
+        secondRoomType,
+        ...remainingTypes,
+        "miniboss"
+    ];
 }
 
 function getRoomPositionFromConnection(parent, parentPosition, child, parentSide) {
@@ -154,9 +165,6 @@ function tryCreateDungeon(seed, roomTypes, templatesByType, random) {
     for (let index = 0; index < roomTypes.length; index += 1) {
         const type = roomTypes[index];
         const templates = templatesByType[type];
-        if (!templates || templates.length === 0) {
-            throw new RangeError(`No room templates are available for required type "${type}"`);
-        }
         const layout = templates[Math.floor(random() * templates.length)];
         let rotation = 0;
         if (type === "enemy") {
@@ -195,11 +203,15 @@ function tryCreateDungeon(seed, roomTypes, templatesByType, random) {
         );
         const id = index === 0 ? "start" : `room-${index}`;
         if (index === 0) {
+            const startTunnelSide = DungeonRooms.sides[
+                Math.floor(random() * DungeonRooms.sides.length)
+            ];
             const startRoom = DungeonLayout.createRoomInstance({
                 id,
                 layout,
                 gridX: 0,
                 gridY: 0,
+                tunnelSides: [startTunnelSide],
                 barrelSpawnRolls,
                 enemySpawnRolls,
                 wallSpawnRolls
@@ -445,6 +457,20 @@ function tryCreateDungeon(seed, roomTypes, templatesByType, random) {
     return DungeonLayout.create({ seed, rooms: finalizedRooms, connections });
 }
 
+function generateDungeonForSeed(seed, templatesByType) {
+    const random = createSeededRandom(seed);
+    const roomTypes = createRoomTypes(random);
+
+    for (let attempt = 0; attempt < 2000; attempt += 1) {
+        const dungeon = tryCreateDungeon(seed, roomTypes, templatesByType, random);
+        if (dungeon) {
+            return dungeon;
+        }
+    }
+
+    return null;
+}
+
 function generateDungeon({
     seed,
     roomCount = DEFAULT_DUNGEON_ROOM_COUNT,
@@ -453,30 +479,9 @@ function generateDungeon({
     const validSeed = (typeof seed === "string" && seed.length > 0) ||
         (typeof seed === "number" && Number.isFinite(seed));
     if (!validSeed) {
-        throw new TypeError("Dungeon generation requires a string or finite numeric seed");
-    }
-    if (roomCount !== DEFAULT_DUNGEON_ROOM_COUNT) {
-        throw new RangeError(`Dungeon roomCount is fixed at ${DEFAULT_DUNGEON_ROOM_COUNT}`);
-    }
-    if (!Array.isArray(requiredRoomTypes) ||
-        requiredRoomTypes.some((type) =>
-            type !== "miniboss" && !GENERATED_ROOM_TYPES.includes(type)
-        )) {
-        throw new TypeError(`requiredRoomTypes must contain only: ${[...GENERATED_ROOM_TYPES, "miniboss"].join(", ")}`);
-    }
-    const requestedTypeCounts = requiredRoomTypes.reduce((counts, type) => {
-        counts[type] = (counts[type] || 0) + 1;
-        return counts;
-    }, {});
-    for (const [type, count] of Object.entries(requestedTypeCounts)) {
-        const availableCount = type === "miniboss" ? 1 : GENERATED_ROOM_TYPE_COUNTS[type];
-        if (count > availableCount) {
-            throw new RangeError(`requiredRoomTypes requests more ${type} rooms than the fixed dungeon composition allows`);
-        }
+        throw new TypeError("Invalid seed");
     }
 
-    const random = createSeededRandom(seed);
-    const roomTypes = createRoomTypes(random);
     const templatesByType = Object.values(DungeonRooms.layouts).reduce((templates, layout) => {
         if (layout.type === "start" || layout.type === "miniboss" ||
             GENERATED_ROOM_TYPES.includes(layout.type)) {
@@ -485,30 +490,17 @@ function generateDungeon({
         return templates;
     }, Object.fromEntries(["start", ...GENERATED_ROOM_TYPES, "miniboss"].map((type) => [type, []])));
 
-    for (let attempt = 0; attempt < 500; attempt += 1) {
-        const dungeon = tryCreateDungeon(seed, roomTypes, templatesByType, random);
+    for (let seedAttempt = 0; seedAttempt < MAX_SEED_ATTEMPTS; seedAttempt += 1) {
+        const attemptSeed = seedAttempt === 0
+            ? seed
+            : `${seed}-retry-${seedAttempt}`;
+        const dungeon = generateDungeonForSeed(attemptSeed, templatesByType);
         if (dungeon) {
-            const roomTypeCounts = dungeon.rooms.reduce((counts, room) => {
-                counts[room.type] = (counts[room.type] || 0) + 1;
-                return counts;
-            }, {});
-            if (roomTypeCounts.start !== 1 || roomTypeCounts.miniboss !== 1 ||
-                GENERATED_ROOM_TYPES.some((type) =>
-                    roomTypeCounts[type] !== GENERATED_ROOM_TYPE_COUNTS[type]
-                )) {
-                throw new RangeError("Generated dungeon must contain one start, one miniboss, four enemy, two chest, and two special rooms");
-            }
-            const miniboss = dungeon.rooms.find((room) => room.type === "miniboss");
-            const minibossConnections = dungeon.connections.filter((connection) =>
-                connection.fromRoomId === miniboss.id || connection.toRoomId === miniboss.id
-            );
-            if (minibossConnections.length !== 1) {
-                throw new RangeError("Generated dungeon must have one miniboss room with one connection");
-            }
+            dungeon.seed = seed;
             return dungeon;
         }
     }
-    throw new RangeError("Could not generate an interconnected ten-room dungeon");
+    throw new RangeError(`Could not generate an valid dungeon`);
 }
 
 const DungeonGenorator = Object.freeze({

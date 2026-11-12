@@ -15,8 +15,8 @@ const StartRoom = Object.freeze({
     type: "start",
     width: 300,
     height: 300,
-    tunnelSides: Object.freeze(["east"]),
-    requiredFirstRoomType: "enemy"
+    tunnelSides: DungeonRoomSides,
+    requiredFirstRoomType: "chest"
 });
 
 const EnemyRoom1 = Object.freeze({
@@ -82,6 +82,13 @@ const SpecialRoom = Object.freeze({
     height: 300
 });
 
+const LargeSpecialRoom = Object.freeze({
+    name: "s2",
+    type: "special",
+    width: 400,
+    height: 400
+});
+
 const DUNGEON_ROOM_LAYOUTS = Object.freeze({
     StartRoom,
     EnemyRoom1,
@@ -92,7 +99,8 @@ const DUNGEON_ROOM_LAYOUTS = Object.freeze({
     EnemyRoom6,
     ChestRoom,
     MinibossRoom,
-    SpecialRoom
+    SpecialRoom,
+    LargeSpecialRoom
 });
 
 const ROOM_ASCII_LAYOUTS = Object.freeze({
@@ -111,7 +119,7 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
     S: special
     */
     start: Object.freeze([
-        "OOOOOO",
+        "OOTTOO",
         "O----O",
         "T----T",
         "T----T",
@@ -134,15 +142,15 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
     ]),
     e2: Object.freeze([
         "OOOOOTTOOOOO",
-        "ObbO---BOOOO",
+        "ObbOO--BOOOO",
         "O-EO----oOOO",
         "O--o---eOOOO",
         "O------bOOOO",
         "T------b---T",
         "T----------T",
-        "OOo--------O",
+        "OOo------BOO",
         "OOOo--E-oOOO",
-        "OOOO----OOOO",
+        "OOOo----OOOO",
         "OOOOb--bOOOO",
         "OOOOOTTOOOOO"
     ]),
@@ -217,6 +225,16 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
         "T----T",
         "O---oO",
         "OOTTOO"
+    ]),
+    s2: Object.freeze([
+        "OOOTTOOO",
+        "Oob---oO",
+        "O-----bO",
+        "T--S---T",
+        "T------T",
+        "O-----bO",
+        "Ob----OO",
+        "OOOTTOOO"
     ]),
     mb: Object.freeze([
         "OOOOTTOOOO",
@@ -514,8 +532,8 @@ function createRoom(
         new Set(sides).size !== sides.length) {
         throw new RangeError("Room tunnel sides must be unique cardinal directions (up to four)");
     }
-    if (roomLayout === StartRoom && (sides.length !== 1 || sides[0] !== "east")) {
-        throw new RangeError("StartRoom has a fixed east tunnel");
+    if (roomLayout === StartRoom && sides.length !== 1) {
+        throw new RangeError("StartRoom must have exactly one tunnel");
     }
 
     const roomGeometry = parseRoomAscii(

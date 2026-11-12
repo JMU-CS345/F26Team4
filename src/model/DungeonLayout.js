@@ -80,23 +80,6 @@ function createDungeonLayout({ seed, rooms = [], connections = [] } = {}) {
         }
         roomsById.set(room.id, room);
     }
-    for (const connection of connections) {
-        if (!connection ||
-            typeof connection.fromRoomId !== "string" ||
-            !DungeonRooms.sides.includes(connection.fromSide) ||
-            typeof connection.toRoomId !== "string" ||
-            !DungeonRooms.sides.includes(connection.toSide)) {
-            throw new TypeError("Dungeon connections require room IDs and tunnel sides at both ends");
-        }
-        const fromRoom = roomsById.get(connection.fromRoomId);
-        const toRoom = roomsById.get(connection.toRoomId);
-        if (!fromRoom || !toRoom ||
-            !fromRoom.tunnelSides.includes(connection.fromSide) ||
-            !toRoom.tunnelSides.includes(connection.toSide)) {
-            throw new RangeError("Dungeon connections must use existing rooms and selected tunnel sides");
-        }
-    }
-
     return {
         seed,
         rooms: [...rooms],
