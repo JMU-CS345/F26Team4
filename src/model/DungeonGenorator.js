@@ -30,7 +30,7 @@ function createSeededRandom(seed) {
     };
 }
 
-function shuffle(values, random) {
+function shuffleWithSeededRandom(values, random) {
     const shuffled = [...values];
     for (let index = shuffled.length - 1; index > 0; index -= 1) {
         const swapIndex = Math.floor(random() * (index + 1));
@@ -43,7 +43,7 @@ function createRoomTypes(random) {
     const generatedTypes = GENERATED_ROOM_TYPES.flatMap((type) =>
         Array(GENERATED_ROOM_TYPE_COUNTS[type]).fill(type)
     );
-    return ["start", ...shuffle(generatedTypes, random), "miniboss"];
+    return ["start", ...shuffleWithSeededRandom(generatedTypes, random), "miniboss"];
 }
 
 function getRoomPositionFromConnection(parent, parentPosition, child, parentSide) {
@@ -233,7 +233,7 @@ function tryCreateDungeon(seed, roomTypes, templatesByType, random) {
             const freeSides = roomSides.filter((side) =>
                 !connectedSides.get(parent.id).has(side)
             );
-            for (const parentSide of shuffle(freeSides, random)) {
+            for (const parentSide of shuffleWithSeededRandom(freeSides, random)) {
                 const candidatePosition = getRoomPositionFromConnection(
                     parent, positions[parentIndex], candidateRoom, parentSide
                 );
