@@ -116,18 +116,12 @@ const DUNGEON_ROOM_LAYOUTS = Object.freeze({
 
 const ROOM_ASCII_LAYOUTS = Object.freeze({
     start: Object.freeze([
-        "oooooooooooo",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------E",
-        "o----------E",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "oooooooooooo"
+        "oooooo",
+        "o----o",
+        "o----E",
+        "o----E",
+        "o----o",
+        "oooooo"
     ]),
     e1: Object.freeze([
         "oooooNNooooo",
