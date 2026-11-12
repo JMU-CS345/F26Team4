@@ -4,6 +4,10 @@ function createDungeonRoomInstance({
     gridX,
     gridY,
     tunnelSides,
+    rotation = 0,
+    barrelSpawnRolls,
+    enemySpawnRolls,
+    wallSpawnRolls,
     generatedData = {}
 } = {}) {
     if (typeof id !== "string" || id.length === 0) {
@@ -23,7 +27,10 @@ function createDungeonRoomInstance({
         throw new TypeError("Room enemies and chestContents must be arrays, and other must be an object");
     }
 
-    const room = DungeonRooms.createRoom(layout, tunnelSides);
+    const room = DungeonRooms.createRoom(
+        layout, tunnelSides, rotation, barrelSpawnRolls, enemySpawnRolls,
+        wallSpawnRolls
+    );
     return {
         id,
         template: room.name,
@@ -33,6 +40,10 @@ function createDungeonRoomInstance({
         gridSize: room.gridSize,
         gridCellSize: room.gridCellSize,
         gridPosition: { x: gridX, y: gridY },
+        rotation: room.rotation,
+        barrelSpawnRolls: room.barrelSpawnRolls,
+        enemySpawnRolls: room.enemySpawnRolls,
+        wallSpawnRolls: room.wallSpawnRolls,
         tunnelSides: room.tunnelSides,
         tunnels: room.tunnels,
         walls: room.walls,
@@ -40,6 +51,7 @@ function createDungeonRoomInstance({
         barrelSpawnPoints: room.barrelSpawnPoints || [],
         specialSpawnPoints: room.specialSpawnPoints || [],
         chestSpawnPoint: room.chestSpawnPoint || null,
+        minibossSpawnPoint: room.minibossSpawnPoint || null,
         generatedData: {
             enemies: [...enemies],
             chestContents: [...chestContents],

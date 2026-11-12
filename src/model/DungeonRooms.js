@@ -2,24 +2,11 @@ const DUNGEON_ROOM_SIZE = 600;
 const ROOM_GRID_SIZE = 12;
 const ROOM_GRID_CELL_SIZE = DUNGEON_ROOM_SIZE / ROOM_GRID_SIZE;
 const DUNGEON_ROOM_WALL_THICKNESS = ROOM_GRID_CELL_SIZE;
-const ROOM_ASCII_LEGEND = Object.freeze({
-    o: "wall",
-    "-": "floor",
-    b: "barrel spawn point",
-    N: "north tunnel cell",
-    E: "east tunnel cell",
-    S: "south tunnel cell",
-    W: "west tunnel cell",
-    e: "enemy spawn point",
-    s: "special spawn point",
-    c: "chest spawn"
-});
-
 const DungeonRoomSides = Object.freeze(["north", "east", "south", "west"]);
 
 const TunnelPreset = Object.freeze({
     width: 100,
-    length: 150,
+    length: 75,
     alignment: "center"
 });
 
@@ -60,32 +47,39 @@ const EnemyRoom4 = Object.freeze({
     height: DUNGEON_ROOM_SIZE
 });
 
-const ChestRoom = Object.freeze({
-    name: "c1",
-    type: "chest",
+const EnemyRoom5 = Object.freeze({
+    name: "e5",
+    type: "enemy",
     width: DUNGEON_ROOM_SIZE,
     height: DUNGEON_ROOM_SIZE
 });
 
-const ChestRoom2 = Object.freeze({
-    name: "c2",
-    type: "chest",
+const EnemyRoom6 = Object.freeze({
+    name: "e6",
+    type: "enemy",
     width: DUNGEON_ROOM_SIZE,
     height: DUNGEON_ROOM_SIZE
+});
+
+const ChestRoom = Object.freeze({
+    name: "c",
+    type: "chest",
+    width: 300,
+    height: 300
 });
 
 const MinibossRoom = Object.freeze({
     name: "mb",
     type: "miniboss",
-    width: DUNGEON_ROOM_SIZE,
-    height: DUNGEON_ROOM_SIZE
+    width: 500,
+    height: 500
 });
 
 const SpecialRoom = Object.freeze({
     name: "s",
     type: "special",
-    width: DUNGEON_ROOM_SIZE,
-    height: DUNGEON_ROOM_SIZE
+    width: 300,
+    height: 300
 });
 
 const DUNGEON_ROOM_LAYOUTS = Object.freeze({
@@ -94,167 +88,197 @@ const DUNGEON_ROOM_LAYOUTS = Object.freeze({
     EnemyRoom2,
     EnemyRoom3,
     EnemyRoom4,
+    EnemyRoom5,
+    EnemyRoom6,
     ChestRoom,
-    ChestRoom2,
     MinibossRoom,
     SpecialRoom
 });
 
 const ROOM_ASCII_LAYOUTS = Object.freeze({
+    /*
+    key
+    O: wall
+    T: possible tunnel opening
+    -: floor
+    E: enemy spawn
+    e: chance of enemy spawn
+    B: barrel
+    b: chance of barrel
+    o: chance of wall (one in three)
+    M: miniboss spawn point
+    C: chest
+    S: special
+    */
     start: Object.freeze([
-        "oooooo",
-        "o----o",
-        "o----E",
-        "o----E",
-        "o----o",
-        "oooooo"
+        "OOOOOO",
+        "O----O",
+        "T----T",
+        "T----T",
+        "O----O",
+        "OOTTOO"
     ]),
     e1: Object.freeze([
-        "oooooNNooooo",
-        "ob-------bbo",
-        "o--oo------o",
-        "o--oo------o",
-        "o----------o",
-        "W----------E",
-        "W----------E",
-        "o----------o",
-        "o------oob-o",
-        "o--e---oo--o",
-        "o----------o",
-        "oooooSSooooo"
+        "OOOOOTTOOOOO",
+        "Ob-------OOO",
+        "Oe--O----bOO",
+        "O--OOb----oO",
+        "O---o------O",
+        "T----------T",
+        "T----------T",
+        "O--o-------O",
+        "O------OoB-O",
+        "OB-E---OO--O",
+        "OOo-------bO",
+        "OOOOOTTOOOOO"
     ]),
     e2: Object.freeze([
-        "oooooNNooooo",
-        "obbo----oooo",
-        "o-eo----oooo",
-        "o--o----oooo",
-        "o-------oooo",
-        "W----------E",
-        "W----------E",
-        "oooo-------o",
-        "oooo--e-oooo",
-        "oooo----oooo",
-        "oooo----oooo",
-        "oooooSSooooo"
+        "OOOOOTTOOOOO",
+        "ObbO---BOOOO",
+        "O-EO----oOOO",
+        "O--o---eOOOO",
+        "O------bOOOO",
+        "T------b---T",
+        "T----------T",
+        "OOo--------O",
+        "OOOo--E-oOOO",
+        "OOOO----OOOO",
+        "OOOOb--bOOOO",
+        "OOOOOTTOOOOO"
     ]),
     e3: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o---------eo",
-        "o------ooooo",
-        "o---------bo",
-        "W----------E",
-        "W----------E",
-        "oooooo----oo",
-        "ooooobbooooo",
-        "o--------ooo",
-        "oe---------o",
-        "oooooSSooooo"
+        "OOOOOTTOOOOO",
+        "OO-oo-----BO",
+        "Obe-------EO",
+        "O------OOOOO",
+        "Oo---------O",
+        "T----------T",
+        "T----------T",
+        "OooOOOb-boOO",
+        "OOOOOBBOOOOO",
+        "OO------bOOO",
+        "OE-o------bO",
+        "OOOOOTTOOOOO"
     ]),
     e4: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o---e------o",
-        "o----------o",
-        "oooo-------o",
-        "W----------E",
-        "W----------E",
-        "o---------oo",
-        "o--bb-----oo",
-        "o--b-------o",
-        "o---------eo",
-        "oooooSSooooo"
+        "OOOOOTTOOOOO",
+        "OO-------OOO",
+        "O---E-----oO",
+        "OB---------O",
+        "OOOOb------O",
+        "T--o-------T",
+        "T----------T",
+        "O--------bOO",
+        "O--Bb---oOOO",
+        "O--bOo-----O",
+        "O-e-------EO",
+        "OOOOOTTOOOOO"
     ]),
-    c1: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o----------o",
-        "o--o--e-oooo",
-        "o--o----o--o",
-        "W--o-c--o--E",
-        "W--o----o--E",
-        "o--o-e--o--o",
-        "oooo-------o",
-        "o----------o",
-        "o----------o",
-        "oooooSSooooo"
+    e5: Object.freeze([
+        "OOOOOTTOOOOO",
+        "OBb-O-----eO",
+        "Ob--Oo-bbOOO",
+        "O----------O",
+        "O----------O",
+        "T---O------T",
+        "T---OE-----T",
+        "OoOOOBb----O",
+        "O----------O",
+        "O---bOOOOB-O",
+        "OE--------bO",
+        "OOOOOTTOOOOO"
     ]),
-    c2: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----c-----o",
-        "W----------E",
-        "W----------E",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "oooooSSooooo"
+    e6: Object.freeze([
+        "OOOOOTTOOOOO",
+        "OOo------OOO",
+        "OO--------bO",
+        "O----------O",
+        "O---OBBO---O",
+        "T---OE-O---T",
+        "T---O-eO---T",
+        "O---OBBO---O",
+        "O----------O",
+        "O----------O",
+        "OOob------bO",
+        "OOOOOTTOOOOO"
+    ]),
+    c: Object.freeze([
+        "OOTTOO",
+        "Ob--oO",
+        "T-C--T",
+        "T----T",
+        "Ob--bO",
+        "OOTTOO"
     ]),
     s: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "W----s-----E",
-        "W----------E",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "oooooSSooooo"
+        "OOTTOO",
+        "Oo--bO",
+        "T-S--T",
+        "T----T",
+        "O---oO",
+        "OOTTOO"
     ]),
     mb: Object.freeze([
-        "oooooNNooooo",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "W----------E",
-        "W----------E",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "o----------o",
-        "oooooSSooooo"
+        "OOOOTTOOOO",
+        "O--------O",
+        "O--------O",
+        "O--------O",
+        "T---M----T",
+        "T--------T",
+        "O--------O",
+        "O--------O",
+        "O--------O",
+        "OOOOTTOOOO"
     ])
 });
 
 function getTunnelSideAt(gridX, gridY, token, gridWidth, gridHeight, cellSize) {
+    if (token !== "T") {
+        return null;
+    }
     const openingWidth = TunnelPreset.width / cellSize;
     const horizontalOpeningStart = (gridWidth - openingWidth) / 2;
     const horizontalOpeningEnd = horizontalOpeningStart + openingWidth;
     const verticalOpeningStart = (gridHeight - openingWidth) / 2;
     const verticalOpeningEnd = verticalOpeningStart + openingWidth;
-    if (gridY === 0 && token === "N" &&
+    if (gridY === 0 &&
         gridX >= horizontalOpeningStart && gridX < horizontalOpeningEnd) {
         return "north";
     }
-    if (gridX === gridWidth - 1 && token === "E" &&
+    if (gridX === gridWidth - 1 &&
         gridY >= verticalOpeningStart && gridY < verticalOpeningEnd) {
         return "east";
     }
-    if (gridY === gridHeight - 1 && token === "S" &&
+    if (gridY === gridHeight - 1 &&
         gridX >= horizontalOpeningStart && gridX < horizontalOpeningEnd) {
         return "south";
     }
-    if (gridX === 0 && token === "W" &&
+    if (gridX === 0 &&
         gridY >= verticalOpeningStart && gridY < verticalOpeningEnd) {
         return "west";
     }
     return null;
 }
 
-function parseRoomAscii(layout, tunnelSides) {
+function rotateRoomGrid(grid, quarterTurns) {
+    let rotated = grid;
+    for (let turn = 0; turn < quarterTurns; turn += 1) {
+        rotated = rotated[0].map((_, column) =>
+            rotated.map((row) => row[column]).reverse()
+        );
+    }
+    return rotated;
+}
+
+function parseRoomAscii(
+    layout, tunnelSides, rotation, barrelSpawnRolls, enemySpawnRolls, wallSpawnRolls
+) {
     const asciiRows = ROOM_ASCII_LAYOUTS[layout.name];
     if (!asciiRows || asciiRows.length === 0) {
         throw new RangeError(`Room layout ${layout.name} must define an ASCII grid`);
     }
 
-    const grid = asciiRows.map((row) => [...row]);
+    const grid = rotateRoomGrid(asciiRows.map((row) => [...row]), rotation);
     const gridHeight = grid.length;
     const gridWidth = grid[0].length;
     if (gridWidth === 0 || grid.some((row) => row.length !== gridWidth)) {
@@ -274,8 +298,12 @@ function parseRoomAscii(layout, tunnelSides) {
     const barrelSpawnPoints = [];
     const specialSpawnPoints = [];
     let chestSpawnPoint = null;
+    let minibossSpawnPoint = null;
     const tunnelMarkerCounts = new Map();
-    const validTokens = new Set(["o", "b", "-", "N", "E", "S", "W", "e", "s", "c"]);
+    const validTokens = new Set(["O", "o", "B", "b", "-", "T", "E", "e", "S", "C", "M"]);
+    let optionalBarrelIndex = 0;
+    let optionalEnemyIndex = 0;
+    let optionalWallIndex = 0;
 
     for (let gridY = 0; gridY < gridHeight; gridY += 1) {
         for (let gridX = 0; gridX < gridWidth; gridX += 1) {
@@ -303,42 +331,72 @@ function parseRoomAscii(layout, tunnelSides) {
                 continue;
             }
 
-            if (token === "N" || token === "E" || token === "S" || token === "W") {
-                throw new RangeError(`Tunnel marker "${token}" is on the wrong side in layout ${layout.name}`);
+            if (token === "T") {
+                throw new RangeError(`Tunnel marker in layout ${layout.name} must be centered on a room edge`);
             }
             if (gridY === 0 || gridY === gridHeight - 1 ||
                 gridX === 0 || gridX === gridWidth - 1) {
-                if (token !== "o") {
+                if (token !== "O") {
                     throw new RangeError(`Room layout ${layout.name} must have walls or tunnel markers along its edges`);
                 }
             }
 
             const x = gridX * cellSize;
             const y = gridY * cellSize;
-            if (token === "o") {
+            if (token === "O") {
                 walls.push(new Wall(x, y, cellSize, cellSize));
-            } else if (token === "b") {
+            } else if (token === "o") {
+                if (wallSpawnRolls[optionalWallIndex]) {
+                    walls.push(new Wall(x, y, cellSize, cellSize));
+                }
+                optionalWallIndex += 1;
+            } else if (token === "B") {
                 barrelSpawnPoints.push(Object.freeze({
                     x: x + cellSize / 2,
                     y: y + cellSize / 2
                 }));
-            } else if (token === "e") {
+            } else if (token === "b") {
+                if (barrelSpawnRolls[optionalBarrelIndex]) {
+                    barrelSpawnPoints.push(Object.freeze({
+                        x: x + cellSize / 2,
+                        y: y + cellSize / 2
+                    }));
+                }
+                optionalBarrelIndex += 1;
+            } else if (token === "E") {
                 enemySpawnPoints.push(Object.freeze({
                     x: x + cellSize / 2,
                     y: y + cellSize / 2
                 }));
-            } else if (token === "s") {
+            } else if (token === "e") {
+                if (enemySpawnRolls[optionalEnemyIndex] &&
+                    enemySpawnPoints.length < 2) {
+                    enemySpawnPoints.push(Object.freeze({
+                        x: x + cellSize / 2,
+                        y: y + cellSize / 2
+                    }));
+                }
+                optionalEnemyIndex += 1;
+            } else if (token === "S") {
                 specialSpawnPoints.push(Object.freeze({
                     x: layout.width / 2,
                     y: layout.height / 2
                 }));
-            } else if (token === "c") {
+            } else if (token === "C") {
                 if (chestSpawnPoint) {
                     throw new RangeError(`Room layout ${layout.name} can only define one chest spawn point`);
                 }
                 chestSpawnPoint = Object.freeze({
-                    x: x + cellSize / 2,
-                    y: y + cellSize / 2
+                    x: layout.width / 2,
+                    y: layout.height / 2
+                });
+            } else if (token === "M") {
+                if (layout.type !== "miniboss" || minibossSpawnPoint) {
+                    throw new RangeError(`Room layout ${layout.name} can only define one miniboss spawn point`);
+                }
+                minibossSpawnPoint = Object.freeze({
+                    x: layout.width / 2,
+                    y: layout.height / 2
                 });
             }
         }
@@ -354,15 +412,17 @@ function parseRoomAscii(layout, tunnelSides) {
             throw new RangeError(`Room layout ${layout.name} has no ${side} tunnel markers`);
         }
     }
-    if (layout.type === "enemy" &&
-        (enemySpawnPoints.length < 1 || enemySpawnPoints.length > 2)) {
-        throw new RangeError(`Enemy room layout ${layout.name} must define one or two enemy spawn points`);
+    if (layout.type === "enemy" && enemySpawnPoints.length < 1) {
+        throw new RangeError(`Enemy room layout ${layout.name} must define at least one enemy spawn point`);
     }
     if (layout.type === "chest" && !chestSpawnPoint) {
         throw new RangeError(`Chest room layout ${layout.name} must define a chest spawn point`);
     }
     if (layout.type === "special" && specialSpawnPoints.length !== 1) {
         throw new RangeError(`Special room layout ${layout.name} must define exactly one special spawn point`);
+    }
+    if (layout.type === "miniboss" && !minibossSpawnPoint) {
+        throw new RangeError(`Miniboss room layout ${layout.name} must define a miniboss spawn point`);
     }
 
     return {
@@ -371,6 +431,7 @@ function parseRoomAscii(layout, tunnelSides) {
         barrelSpawnPoints,
         specialSpawnPoints,
         chestSpawnPoint,
+        minibossSpawnPoint,
         gridSize: { width: gridWidth, height: gridHeight },
         gridCellSize: cellSize
     };
@@ -395,7 +456,10 @@ function createRoomTunnels(layout, tunnelSides, gridCellSize) {
     });
 }
 
-function createRoom(layout, tunnelSides) {
+function createRoom(
+    layout, tunnelSides, rotation = 0, barrelSpawnRolls, enemySpawnRolls,
+    wallSpawnRolls
+) {
     const knownLayouts = Object.values(DUNGEON_ROOM_LAYOUTS);
     const roomLayout = typeof layout === "string"
         ? DUNGEON_ROOM_LAYOUTS[layout] ||
@@ -403,6 +467,42 @@ function createRoom(layout, tunnelSides) {
         : layout;
     if (!knownLayouts.includes(roomLayout)) {
         throw new RangeError("Unknown dungeon room layout");
+    }
+    if (!Number.isInteger(rotation) || rotation < 0 || rotation > 3) {
+        throw new RangeError("Room rotation must be a quarter-turn count from 0 to 3");
+    }
+    const optionalBarrelCount = ROOM_ASCII_LAYOUTS[roomLayout.name]
+        .join("")
+        .split("b").length - 1;
+    const optionalEnemyCount = ROOM_ASCII_LAYOUTS[roomLayout.name]
+        .join("")
+        .split("e").length - 1;
+    const optionalWallCount = ROOM_ASCII_LAYOUTS[roomLayout.name]
+        .join("")
+        .split("o").length - 1;
+    const resolvedBarrelSpawnRolls = barrelSpawnRolls === undefined
+        ? Array.from({ length: optionalBarrelCount }, () => Math.random() < 1 / 3)
+        : barrelSpawnRolls;
+    if (!Array.isArray(resolvedBarrelSpawnRolls) ||
+        resolvedBarrelSpawnRolls.length !== optionalBarrelCount ||
+        resolvedBarrelSpawnRolls.some((roll) => typeof roll !== "boolean")) {
+        throw new TypeError(`Room layout ${roomLayout.name} requires one boolean barrel roll per b marker`);
+    }
+    const resolvedEnemySpawnRolls = enemySpawnRolls === undefined
+        ? Array.from({ length: optionalEnemyCount }, () => Math.random() < 1 / 3)
+        : enemySpawnRolls;
+    if (!Array.isArray(resolvedEnemySpawnRolls) ||
+        resolvedEnemySpawnRolls.length !== optionalEnemyCount ||
+        resolvedEnemySpawnRolls.some((roll) => typeof roll !== "boolean")) {
+        throw new TypeError(`Room layout ${roomLayout.name} requires one boolean enemy roll per e marker`);
+    }
+    const resolvedWallSpawnRolls = wallSpawnRolls === undefined
+        ? Array.from({ length: optionalWallCount }, () => Math.random() < 1 / 3)
+        : wallSpawnRolls;
+    if (!Array.isArray(resolvedWallSpawnRolls) ||
+        resolvedWallSpawnRolls.length !== optionalWallCount ||
+        resolvedWallSpawnRolls.some((roll) => typeof roll !== "boolean")) {
+        throw new TypeError(`Room layout ${roomLayout.name} requires one boolean wall roll per o marker`);
     }
 
     const sides = tunnelSides === undefined
@@ -418,11 +518,18 @@ function createRoom(layout, tunnelSides) {
         throw new RangeError("StartRoom has a fixed east tunnel");
     }
 
-    const roomGeometry = parseRoomAscii(roomLayout, sides);
+    const roomGeometry = parseRoomAscii(
+        roomLayout, sides, rotation, resolvedBarrelSpawnRolls, resolvedEnemySpawnRolls,
+        resolvedWallSpawnRolls
+    );
     return {
         ...roomLayout,
         ...roomGeometry,
         ascii: ROOM_ASCII_LAYOUTS[roomLayout.name],
+        rotation,
+        barrelSpawnRolls: [...resolvedBarrelSpawnRolls],
+        enemySpawnRolls: [...resolvedEnemySpawnRolls],
+        wallSpawnRolls: [...resolvedWallSpawnRolls],
         tunnelSides: [...sides],
         tunnels: createRoomTunnels(roomLayout, sides, roomGeometry.gridCellSize),
         walls: roomGeometry.walls
@@ -436,7 +543,6 @@ const DungeonRooms = Object.freeze({
     gridCellSize: ROOM_GRID_CELL_SIZE,
     sides: DungeonRoomSides,
     tunnelPreset: TunnelPreset,
-    asciiLegend: ROOM_ASCII_LEGEND,
     asciiLayouts: ROOM_ASCII_LAYOUTS,
     layouts: DUNGEON_ROOM_LAYOUTS,
     createRoom
