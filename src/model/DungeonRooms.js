@@ -5,11 +5,13 @@ const DUNGEON_ROOM_WALL_THICKNESS = ROOM_GRID_CELL_SIZE;
 const ROOM_ASCII_LEGEND = Object.freeze({
     o: "wall",
     "-": "floor",
+    b: "barrel spawn point",
     N: "north tunnel cell",
     E: "east tunnel cell",
     S: "south tunnel cell",
     W: "west tunnel cell",
     e: "enemy spawn point",
+    s: "special spawn point",
     c: "chest spawn"
 });
 
@@ -24,8 +26,8 @@ const TunnelPreset = Object.freeze({
 const StartRoom = Object.freeze({
     name: "start",
     type: "start",
-    width: DUNGEON_ROOM_SIZE,
-    height: DUNGEON_ROOM_SIZE,
+    width: 300,
+    height: 300,
     tunnelSides: Object.freeze(["east"]),
     requiredFirstRoomType: "enemy"
 });
@@ -68,8 +70,8 @@ const ChestRoom = Object.freeze({
 const ChestRoom2 = Object.freeze({
     name: "c2",
     type: "chest",
-    width: DUNGEON_ROOM_SIZE,
-    height: DUNGEON_ROOM_SIZE
+    width: 300,
+    height: 300
 });
 
 const MinibossRoom = Object.freeze({
@@ -79,23 +81,9 @@ const MinibossRoom = Object.freeze({
     height: DUNGEON_ROOM_SIZE
 });
 
-const SmallRoom = Object.freeze({
+const SpecialRoom = Object.freeze({
     name: "s",
-    type: "small",
-    width: 300,
-    height: 300
-});
-
-const SmallRoom1 = Object.freeze({
-    name: "s1",
-    type: "small",
-    width: 300,
-    height: 300
-});
-
-const SmallRoom2 = Object.freeze({
-    name: "s2",
-    type: "small",
+    type: "special",
     width: 300,
     height: 300
 });
@@ -109,9 +97,7 @@ const DUNGEON_ROOM_LAYOUTS = Object.freeze({
     ChestRoom,
     ChestRoom2,
     MinibossRoom,
-    SmallRoom,
-    SmallRoom1,
-    SmallRoom2
+    SpecialRoom
 });
 
 const ROOM_ASCII_LAYOUTS = Object.freeze({
@@ -204,8 +190,8 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
     s: Object.freeze([
         "ooNNoo",
         "o----o",
-        "W-ss-E",
-        "W-ss-E",
+        "W--s-E",
+        "W----E",
         "o----o",
         "ooSSoo"
     ]),
@@ -273,9 +259,11 @@ function parseRoomAscii(layout, tunnelSides) {
 
     const walls = [];
     const enemySpawnPoints = [];
+    const barrelSpawnPoints = [];
+    const specialSpawnPoints = [];
     let chestSpawnPoint = null;
     const tunnelMarkerCounts = new Map();
-    const validTokens = new Set(["o", "-", "N", "E", "S", "W", "e", "c"]);
+    const validTokens = new Set(["o", "b", "-", "N", "E", "S", "W", "e", "s", "c"]);
 
     for (let gridY = 0; gridY < gridHeight; gridY += 1) {
         for (let gridX = 0; gridX < gridWidth; gridX += 1) {
@@ -317,10 +305,20 @@ function parseRoomAscii(layout, tunnelSides) {
             const y = gridY * cellSize;
             if (token === "o") {
                 walls.push(new Wall(x, y, cellSize, cellSize));
+            } else if (token === "b") {
+                barrelSpawnPoints.push(Object.freeze({
+                    x: x + cellSize / 2,
+                    y: y + cellSize / 2
+                }));
             } else if (token === "e") {
                 enemySpawnPoints.push(Object.freeze({
                     x: x + cellSize / 2,
                     y: y + cellSize / 2
+                }));
+            } else if (token === "s") {
+                specialSpawnPoints.push(Object.freeze({
+                    x: layout.width / 2,
+                    y: layout.height / 2
                 }));
             } else if (token === "c") {
                 if (chestSpawnPoint) {
@@ -351,10 +349,15 @@ function parseRoomAscii(layout, tunnelSides) {
     if (layout.type === "chest" && !chestSpawnPoint) {
         throw new RangeError(`Chest room layout ${layout.name} must define a chest spawn point`);
     }
+    if (layout.type === "special" && specialSpawnPoints.length !== 1) {
+        throw new RangeError(`Special room layout ${layout.name} must define exactly one special spawn point`);
+    }
 
     return {
         walls,
         enemySpawnPoints,
+        barrelSpawnPoints,
+        specialSpawnPoints,
         chestSpawnPoint,
         gridSize: { width: gridWidth, height: gridHeight },
         gridCellSize: cellSize
