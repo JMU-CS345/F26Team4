@@ -70,8 +70,8 @@ const ChestRoom = Object.freeze({
 const ChestRoom2 = Object.freeze({
     name: "c2",
     type: "chest",
-    width: 300,
-    height: 300
+    width: DUNGEON_ROOM_SIZE,
+    height: DUNGEON_ROOM_SIZE
 });
 
 const MinibossRoom = Object.freeze({
@@ -84,8 +84,8 @@ const MinibossRoom = Object.freeze({
 const SpecialRoom = Object.freeze({
     name: "s",
     type: "special",
-    width: 300,
-    height: 300
+    width: DUNGEON_ROOM_SIZE,
+    height: DUNGEON_ROOM_SIZE
 });
 
 const DUNGEON_ROOM_LAYOUTS = Object.freeze({
@@ -180,20 +180,32 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
         "oooooSSooooo"
     ]),
     c2: Object.freeze([
-        "ooNNoo",
-        "o----o",
-        "W-c--E",
-        "W----E",
-        "o----o",
-        "ooSSoo"
+        "oooooNNooooo",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "o----c-----o",
+        "W----------E",
+        "W----------E",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "oooooSSooooo"
     ]),
     s: Object.freeze([
-        "ooNNoo",
-        "o----o",
-        "W--s-E",
-        "W----E",
-        "o----o",
-        "ooSSoo"
+        "oooooNNooooo",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "W----s-----E",
+        "W----------E",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "o----------o",
+        "oooooSSooooo"
     ]),
     mb: Object.freeze([
         "oooooNNooooo",
@@ -384,8 +396,12 @@ function createRoomTunnels(layout, tunnelSides, gridCellSize) {
 }
 
 function createRoom(layout, tunnelSides) {
-    const roomLayout = typeof layout === "string" ? DUNGEON_ROOM_LAYOUTS[layout] : layout;
-    if (!roomLayout || DUNGEON_ROOM_LAYOUTS[roomLayout.name] !== roomLayout) {
+    const knownLayouts = Object.values(DUNGEON_ROOM_LAYOUTS);
+    const roomLayout = typeof layout === "string"
+        ? DUNGEON_ROOM_LAYOUTS[layout] ||
+            knownLayouts.find((candidate) => candidate.name === layout)
+        : layout;
+    if (!knownLayouts.includes(roomLayout)) {
         throw new RangeError("Unknown dungeon room layout");
     }
 
