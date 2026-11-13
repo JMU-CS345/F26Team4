@@ -58,28 +58,6 @@ function drawMageSelect() {
 
 }
 
-/*function drawMainGame() {
-    fireButton.hide();
-    iceButton.hide();
-    mindButton.hide();
-
-    if (mageType === "fire") {
-        background(199, 38, 6);
-    }
-    else if (mageType === "ice") {
-        background(45, 247, 244);
-    }
-    else {
-        background(209, 33, 222);
-    }
-
-    textAlign(CENTER, CENTER);
-
-    textSize(32);
-    text("Game is running", width / 2, height / 2);
-} */
-
-
 
 function selectMage(type) {
     mageType = type;
