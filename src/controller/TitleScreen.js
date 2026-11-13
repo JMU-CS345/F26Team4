@@ -59,4 +59,7 @@ function draw() {
     } else if (gameState === "game") {
         drawMainGame();
     }
+    if (gameState == "stats") {
+        drawOptionsMenu()
+    }
 }

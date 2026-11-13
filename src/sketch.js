@@ -30,4 +30,6 @@ function drawMainGame() {
   }
 
   playerView.draw(player);
+
+  // OptionsMenu.draw()
 }
