@@ -14,9 +14,9 @@ function setup() {
     startButton.size(width / 6, height / 10);
     startButton.style("background-color", color(52, 235, 113));
     startButton.style("font-family", "Georgia")
-    startButton.style('border-radius', '8px'); 
+    startButton.style('border-radius', '8px');
     startButton.style('cursor', 'pointer');
-    
+
     fireButton = createButton("Fire Mage");
     fireButton.position(width / 8, height / 2 + 75);
     fireButton.size(100, 25);
@@ -37,12 +37,12 @@ function setup() {
 
     CreateOptionsButton()
     OptionsButton.mousePressed(() => {
-    gameState = "stats";
+        gameState = "stats";
     });
 
-    fireButton.mousePressed(() => { selectMage("fire") });
-    iceButton.mousePressed(() => { selectMage("ice") });
-    mindButton.mousePressed(() => { selectMage("mind") });
+    fireButton.mousePressed(() => { selectMage(MageClass.FIREMAGE) });
+    iceButton.mousePressed(() => { selectMage(MageClass.ICEMAGE) });
+    mindButton.mousePressed(() => { selectMage(MageClass.MINDMAGE) });
     fireButton.hide();
     iceButton.hide();
     mindButton.hide();

@@ -14,19 +14,25 @@ const EnemiesClass = Object.freeze({
 const MAGE_CLASS_STATS = Object.freeze({
     [MageClass.FIREMAGE]: Object.freeze({
         health: 100,
+        maxHealth: 100,
         mana: 100,
+        maxMana: 100,
         attackPower: 100,
         spellPower: 15
     }),
     [MageClass.ICEMAGE]: Object.freeze({
         health: 140,
+        maxHealth: 140,
         mana: 150,
+        maxMana: 150,
         attackPower: 80,
         spellPower: 10
     }),
     [MageClass.MINDMAGE]: Object.freeze({
         health: 80,
+        maxHealth: 80,
         mana: 120,
+        maxMana: 120,
         attackPower: 70,
         spellPower: 18
     })
@@ -80,6 +86,7 @@ class Entity {
         this.maxHealth = health;
         if (mana !== undefined) {
             this.mana = mana;
+            this.maxMana = mana;
         }
         this.attackPower = attackPower;
         this.spellPower = spellPower;

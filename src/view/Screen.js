@@ -69,3 +69,42 @@ function selectMage(type) {
     console.log("Selected:", mageType);
     
 }
+
+function drawHealthBar(x, y, w, h, health, maxHealth) {
+  // background (empty) bar
+  fill(60, 60, 60);
+  noStroke();
+  rect(x, y, w, h);
+
+  // health portion, proportional
+  const ratio = Math.max(0, health) / maxHealth;
+  const healthColor = ratio > 0.5 ? [76, 175, 80]
+                    : ratio > 0.25 ? [255, 193, 7]
+                    : [244, 67, 54];
+  fill(healthColor[0], healthColor[1], healthColor[2]);
+  rect(x, y, w * ratio, h);
+
+  // border
+  stroke(0);
+  strokeWeight(2);
+  noFill();
+  rect(x, y, w, h);
+}
+
+function drawManaBar(x, y, w, h, mana, maxMana) {
+  // background (empty) bar
+  fill(60, 60, 60);
+  noStroke();
+  rect(x, y, w, h);
+
+  // mana portion, proportional
+  const ratio = Math.max(0, mana) / maxMana;
+  fill(12, 200, 250);
+  rect(x, y, w  * ratio, h);
+
+  // border
+  stroke(0);
+  strokeWeight(2);
+  noFill();
+  rect(x, y, w, h);
+}
