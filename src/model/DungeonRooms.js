@@ -13,8 +13,8 @@ const TunnelPreset = Object.freeze({
 const StartRoom = Object.freeze({
     name: "start",
     type: "start",
-    width: 300,
-    height: 300,
+    width: 400,
+    height: 400,
     tunnelSides: DungeonRoomSides,
     requiredFirstRoomType: "chest"
 });
@@ -119,12 +119,14 @@ const ROOM_ASCII_LAYOUTS = Object.freeze({
     S: special
     */
     start: Object.freeze([
-        "OOTTOO",
-        "O----O",
-        "T----T",
-        "T----T",
-        "O----O",
-        "OOTTOO"
+        "OOOTTOOO",
+        "O------O",
+        "O------O",
+        "T------T",
+        "T------T",
+        "O------O",
+        "O------O",
+        "OOOTTOOO"
     ]),
     e1: Object.freeze([
         "OOOOOTTOOOOO",
