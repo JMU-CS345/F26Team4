@@ -35,6 +35,8 @@ function setup() {
     mindButton.style('background-color', '#af4c4c');
     mindButton.style('border-radius', '12px');
 
+    CreateOptionsButton()
+
     fireButton.mousePressed(() => { selectMage("fire") });
     iceButton.mousePressed(() => { selectMage("ice") });
     mindButton.mousePressed(() => { selectMage("mind") });
@@ -59,7 +61,7 @@ function draw() {
     } else if (gameState === "game") {
         drawMainGame();
     }
-    if (gameState == "stats") {
-        drawOptionsMenu()
-    }
+    // else if (gameState == "stats") {
+    //     drawOptionsMenu()
+    // }
 }

@@ -2,11 +2,17 @@ function drawOptionsMenu() {
 
 
 }
+function CreateOptionsButton() {
+    OptionsButton = createButton("Options");
+    OptionsButton.position(width, 0);
+    OptionsButton.size(100, 25);
+    OptionsButton.style('background-color', '#af4c4c');
+    OptionsButton.style('border-radius', '12px');
+    OptionsButton.hide();
+    
+}
 
-// function draw(button) {
-//     mindButton = createButton("Mind Mage");
-//     mindButton.position(width / 2 + 125, height / 2 + 75);
-//     mindButton.size(100, 25);
-//     mindButton.style('background-color', '#af4c4c');
-//     mindButton.style('border-radius', '12px');
+
+// function draw() {
+//    OptionsButton.show();
 // }

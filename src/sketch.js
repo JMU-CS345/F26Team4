@@ -23,6 +23,8 @@ function setupMovement () {
 function drawMainGame() {
   background(220);
 
+  OptionsButton.show()
+
   playerController.update(level);
 
   for (const wall of level.walls) {
@@ -31,5 +33,5 @@ function drawMainGame() {
 
   playerView.draw(player);
 
-  // OptionsMenu.draw()
+  
 }

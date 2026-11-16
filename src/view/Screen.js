@@ -67,4 +67,5 @@ function selectMage(type) {
     setupMovement();
     gameState = "game";
     console.log("Selected:", mageType);
+    
 }
