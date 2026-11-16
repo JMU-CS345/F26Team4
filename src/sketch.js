@@ -30,4 +30,6 @@ function drawMainGame() {
   }
 
   playerView.draw(player);
+
+  text(mageType, 100, 150);
 }

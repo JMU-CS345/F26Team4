@@ -58,6 +58,10 @@ function drawMageSelect() {
 
 }
 
+function drawSaveFiles() {
+    saveButtons();
+}
+
 /*function drawMainGame() {
     fireButton.hide();
     iceButton.hide();

@@ -5,6 +5,9 @@ let iceButton;
 let mindButton;
 let mageType;
 
+let newButton;
+let loadButton;
+
 function setup() {
     createCanvas(600, 400);
     fill(0)
@@ -44,16 +47,49 @@ function setup() {
 
     startButton.mousePressed(() => {
         startButton.hide();
+        newButton.show();
+        loadButton.show();
+    });
+
+    newButton = createButton("NEW GAME");
+    newButton.position(width / 2 - newButton.width / 2, height / 2 + 50);
+    newButton.size(width / 6, height / 10);
+    newButton.style("background-color", color(52, 235, 113));
+    newButton.style("font-family", "Georgia")
+    newButton.style('border-radius', '8px'); 
+    newButton.style('cursor', 'pointer');
+    newButton.hide();
+
+    newButton.mousePressed(() => {
+        newButton.hide();
+        loadButton.hide();
         fireButton.show();
         iceButton.show();
         mindButton.show();
-        gameState = "mageSelect";
+        gameState === "mageSelect";
+    });
+
+    loadButton = createButton("LOAD");
+    loadButton.position(width / 2 - loadButton.width / 2, height / 2 + 50);
+    loadButton.size(width / 6, height / 10);
+    loadButton.style("background-color", color(52, 235, 113));
+    loadButton.style("font-family", "Georgia")
+    loadButton.style('border-radius', '8px'); 
+    loadButton.style('cursor', 'pointer');
+    loadButton.hide();
+
+    loadButton.mousePressed(() => {
+        loadButton.hide();
+        newButton.hide();
+        gameState = "saveFiles";
     });
 }
 
 function draw() {
     if (gameState === "title") {
         drawTitleScreen();
+    } else if (gameState === "saveFiles") {
+        drawSaveFiles();
     } else if (gameState === "mageSelect") {
         drawMageSelect();
     } else if (gameState === "game") {
