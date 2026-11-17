@@ -3,6 +3,8 @@ class DungeonView {
         this.currentRoomId = null;
         this.cameraX = null;
         this.cameraY = null;
+        this.exploredRoomIds = new Set();
+        this.traversedConnections = new Set();
     }
 
     draw(dungeon, geometry, player, playerView, walls) {
@@ -10,9 +12,11 @@ class DungeonView {
             !Array.isArray(dungeon.connections) ||
             !geometry || !geometry.positions || !Array.isArray(geometry.tunnels) ||
             geometry.tunnels.length !== dungeon.connections.length ||
+            !Number.isFinite(geometry.width) || geometry.width <= 0 ||
+            !Number.isFinite(geometry.height) || geometry.height <= 0 ||
             !player || !playerView ||
             !Array.isArray(walls)) {
-            throw new RangeError("The dungeon view requires rooms, connections, positioned tunnels, a player, and walls");
+            throw new RangeError("The dungeon view requires rooms, connections, positioned tunnels, valid dimensions, a player, and walls");
         }
 
         for (const room of dungeon.rooms) {
@@ -23,7 +27,19 @@ class DungeonView {
 
         const enteredRoom = this.findPlayerRoom(dungeon, geometry, player);
         if (enteredRoom) {
+            if (this.currentRoomId && this.currentRoomId !== enteredRoom.id) {
+                const traversedConnection = dungeon.connections.find((connection) =>
+                    connection.fromRoomId === this.currentRoomId &&
+                        connection.toRoomId === enteredRoom.id ||
+                    connection.fromRoomId === enteredRoom.id &&
+                        connection.toRoomId === this.currentRoomId
+                );
+                if (traversedConnection) {
+                    this.traversedConnections.add(traversedConnection);
+                }
+            }
             this.currentRoomId = enteredRoom.id;
+            this.exploredRoomIds.add(enteredRoom.id);
         }
         const cameraRoom = dungeon.rooms.find((room) => room.id === this.currentRoomId) ||
             dungeon.rooms[0];
@@ -54,6 +70,99 @@ class DungeonView {
         }
         this.drawWalls(walls);
         playerView.draw(player);
+        pop();
+
+        this.drawMinimap(dungeon, geometry, cameraRoom);
+    }
+
+    drawMinimap(dungeon, geometry, cameraRoom) {
+        const margin = 12;
+        const panelWidth = Math.max(1, Math.min(240, width - margin * 2));
+        const panelHeight = Math.max(1, Math.min(180, height - margin * 2));
+        const padding = 8;
+        const mapScale = Math.min(
+            (panelWidth - padding * 2) / geometry.width,
+            (panelHeight - padding * 2) / geometry.height
+        );
+        const mapWidth = geometry.width * mapScale;
+        const mapHeight = geometry.height * mapScale;
+        const panelX = width - panelWidth - margin;
+        const panelY = margin;
+        const mapX = panelX + (panelWidth - mapWidth) / 2;
+        const mapY = panelY + (panelHeight - mapHeight) / 2;
+
+        push();
+        noStroke();
+        fill(17, 23, 34, 220);
+        rect(panelX, panelY, panelWidth, panelHeight, 8);
+
+        fill(167, 181, 202);
+        for (let index = 0; index < dungeon.connections.length; index += 1) {
+            const connection = dungeon.connections[index];
+            const fromExplored = this.exploredRoomIds.has(connection.fromRoomId);
+            const toExplored = this.exploredRoomIds.has(connection.toRoomId);
+            const traversed = this.traversedConnections.has(connection);
+            if (!fromExplored && !toExplored && !traversed) {
+                continue;
+            }
+            const tunnel = geometry.tunnels[index];
+            const fromRoom = dungeon.rooms.find((room) => room.id === connection.fromRoomId);
+            const toRoom = dungeon.rooms.find((room) => room.id === connection.toRoomId);
+
+            const horizontal = tunnel.width >= tunnel.height;
+            const fromPosition = geometry.positions[fromRoom.id];
+            const toPosition = geometry.positions[toRoom.id];
+            const fromCoordinate = horizontal
+                ? fromPosition.x + fromRoom.width / 2
+                : fromPosition.y + fromRoom.height / 2;
+            const toCoordinate = horizontal
+                ? toPosition.x + toRoom.width / 2
+                : toPosition.y + toRoom.height / 2;
+            const fullyRevealed = traversed || fromExplored && toExplored;
+            const revealStart = fromExplored
+                ? fromCoordinate <= toCoordinate
+                : toCoordinate <= fromCoordinate;
+            const tunnelX = tunnel.x + (
+                !fullyRevealed && horizontal && !revealStart ? tunnel.width / 2 : 0
+            );
+            const tunnelY = tunnel.y + (
+                !fullyRevealed && !horizontal && !revealStart ? tunnel.height / 2 : 0
+            );
+            const tunnelWidth = fullyRevealed
+                ? tunnel.width
+                : horizontal ? tunnel.width / 2 : tunnel.width;
+            const tunnelHeight = fullyRevealed
+                ? tunnel.height
+                : horizontal ? tunnel.height : tunnel.height / 2;
+            rect(
+                mapX + tunnelX * mapScale,
+                mapY + tunnelY * mapScale,
+                Math.max(2, tunnelWidth * mapScale),
+                Math.max(2, tunnelHeight * mapScale)
+            );
+        }
+
+        fill(167, 181, 202);
+        for (const room of dungeon.rooms) {
+            if (!this.exploredRoomIds.has(room.id)) {
+                continue;
+            }
+            const position = geometry.positions[room.id];
+            rect(
+                mapX + position.x * mapScale,
+                mapY + position.y * mapScale,
+                Math.max(1, room.width * mapScale),
+                Math.max(1, room.height * mapScale)
+            );
+        }
+
+        const playerRoomPosition = geometry.positions[cameraRoom.id];
+        fill(0, 100, 255);
+        circle(
+            mapX + (playerRoomPosition.x + cameraRoom.width / 2) * mapScale,
+            mapY + (playerRoomPosition.y + cameraRoom.height / 2) * mapScale,
+            7
+        );
         pop();
     }
 
