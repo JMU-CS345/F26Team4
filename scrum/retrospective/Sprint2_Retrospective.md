@@ -34,38 +34,33 @@
 
 *Use these to ground the discussion in evidence.*
 
-**Points committed / completed:** 15 / 15
+**Points committed / completed:** 18 / 26 (extra tasks done that wern't under planning)
 
-**PRs merged:** _ 7
+**PRs merged:** _ 17
 
-**CI runs failed / total:** 14_ / 15_ *(In your repo's **Actions** tab, count the runs from this sprint's dates. Use the **Status** filter to find the failed ones.)*
+**CI runs failed / total:** 14
 
-**Stories carried over:** _0
+**Stories carried over:** 0
 
 ---
 
 ## 4. Observations
 
-*Every member contributes at least one item. Be specific: "three PRs waited more than two days for review" is more useful than "communication could be better."*
-
-*A concrete observation says what happened and backs it up with a specific PR, story, date, or number. Filling in section 3 isn't enough on its own: use its numbers in your observations where they help explain what happened.*
+good progress was made, merge conflict issues caused problems.
 
 ### What went well
 
-- The planning for the sprint went well with a good first step to the game and splitting up work between everyone.
-- The PRs were reviewed within 24 hours.
-- 
+- a good amount of progress was made.
 
 ### What did not go well
 
-- Our work was not properly merged together into main and nothing was pushed into production by today
-- We didn't collaborate efficiently outside of class
--
+- merge issues caused some stories to not be done in time.
+- work was done on tasks that weren't listed under planning
 
 ### What puzzled us or what we want to try
 
-- Managing github knowledge through different operating systems is puzzling
-- We want to try to get more familiary with merging branches.
+- better planning
+- better communication and more frequent commits of progress to avoid conflicts
 
 ---
 
@@ -73,15 +68,15 @@
 
 *Pick the most important problem from above and ask "why?" until you reach something the team can change.*
 
-**Problem:** _ Not collaborating well outside of class
+**Problem:** conflicts between branches. 
 
-**Why?** _ Different schedules for each person
+**Why?** changes being made to things that someone elses branch build on.
 
-**Why?** _ People don't have the knowledge to help others so they won't chime in, making some feel unheard.
+**Why?** the base infrastructure had issues that had to be worked on, so the stuff built on top of it ended up having issues. 
 
 **Why?** _
 
-**Root cause:** _ Members don't know what the other members are doing in much detail so they can't help well.
+**Root cause:** changes being made to the base of something someone is working on.
 
 ---
 
@@ -91,9 +86,9 @@
 
 | Action item | Owner | How we will know it worked |
 |-------------|-------|----------------------------|
-|help other members |  Devon |  asking others      |
-|Get better at github| Mark  | pulls and merges take less time |
-|             |       |                            |
+| communicating changes to not lose progress | Jonah | won't have to rewrite things |
+| keeping up with changes to not lose progress | Devon | won't have to rewrite things |
+| better planning on tasks/not doing things that weren't planned | Jack | looking at what was done vs. planned |
 
 ---
 
@@ -106,7 +101,7 @@ none
 **Pull request:** *(link, or "none")*
 none
 **If no change is needed, why not?** *(Explain why the current rules are working, citing something from this sprint.)*
-the constitution didn't particularly effect any of the problems we're having and most problems are with personal knowledge/inexperience with either github or p5.js
+the issues are were caused by not following basic sprint protocol. 
 ---
 
 ## 8. Checklist
