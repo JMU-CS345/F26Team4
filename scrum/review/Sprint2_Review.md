@@ -8,17 +8,17 @@
 
 **Date:** _ 11/9/26
 
-**Scrum Master:** _ Jonah Parker
+**Scrum Master:** _ Devon
 
-**Attendees:** _ Jonah, Mark, Jack, Devon, Liam
+**Attendees:** _ Jonah, Mark, Jack, Liam
 
-**Absent:** _ n/a
+**Absent:** _ Devon
 
-**Presenter:** Liam
+**Presenter:** Jonah
 
 **Deployed build reviewed:** (https://jmu-cs345.github.io/F26Team4/)
 
-**Release PR into `production`:** (https://github.com/JMU-CS345/F26Team4/pull/37)
+**Release PR into `production`:** https://github.com/JMU-CS345/F26Team4/pull/50
 
 ---
 
@@ -26,11 +26,11 @@
 
 *Tell the stakeholder whether the sprint delivered what it set out to.*
 
-**The goal we set:** _ A player starts the game, selects their character, and can move around in an environment.
+**The goal we set:** _ When you start the game, you enter the first procedurally generated dungeon with enemies that send you to a turn based rpg style combat sequence that will not be fully implemented yet. There will also be stat visuals/templates in the GUI and a save/load mechanic.
 
-**Did we meet it?** *(Yes / Partly / No, and one sentence explaining why)*
+**Did we meet it?** Partly
 
-_  Yes, we got a working title screen that leads into a mage select screen that leads into a character moving around in an environment.
+_  We got procedurally generated dungeons with enemies that follow the player, and there is a saving and loading mechanic with three save files. We did not complete the sequence into turn based combat and the stat GUI and health bar.
 
 ---
 
@@ -42,11 +42,12 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 
 | Issue # | User story | Estimate | Owner | Done? | Built by |
 |---------|------------|----------|-------|-------|----------|
-|    1     |    Player Movement        |    2      |   Mark    |  X     |  Liam         |
-|    6     |   Title Screen         |    5      |  Jonah     |  X    |   Jonah        |
-|    8     |    Mage Type        |    3      |   Devon    |  X     |    Devon       |
-|    23     |    Collision with walls        |    5      |  Liam     |  X     |    Liam       |
-|         |            |          |       |       |           |
+|    2     |    Dungeon Generation  |    8      |   Jack    |  X     |  Jack         |
+|    12     |   Enemies         |    5      |  Liam     |  X    |   Liam        |
+|    3     |    Health Bar        |    3      |   Devon    |       |    Devon       |
+|    19     |    Player Stats        |    5      |  Mark     |       |    Mark       |
+|    16     |     Save/Load       |     5     |  Jonah     |   X    |   Jonah        |
+|    41     |    Dynamic Camera  |    n/a      |   Jack    |  X     |  Jack         |
 
 ---
 
@@ -54,22 +55,22 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 
 | | Points |
 |---|---|
-| Committed | 15 |
-| Completed | 15 |
-| Completion rate | 100% |
+| Committed | 26 |
+| Completed | 18 |
+| Completion rate | 69% |
 
 **Velocity history:**
 
 | Sprint | Committed | Completed |
 |--------|-----------|-----------|
 | 1      |    15       |    15       |
-| 2      |           |           |
+| 2      |    26       |    18       |
 | 3      |           |           |
 | 4      |           |           |
 
 
 **What explains the difference between committed and completed?** _
-
+We were not prepared for the merge conflicts when trying to merge the stats and main, we should get everything ready at least a day in advance in the future.
 
 ---
 
@@ -79,43 +80,50 @@ _  Yes, we got a working title screen that leads into a mage select screen that 
 
 *Presenter: be ready to explain and answer questions about every completed story, including work you didn't build.*
 
-### Issue #_: Player Movement
+### Issue #2: Dungeon Generation
 
-- [X] Given the game is active and the player is in a scene
-When the player presses the up arrow button or the "w" key
-Then the player should move up
-- [X] Given the game is active and the player is in a scene
-When the player presses the left arrow button or the "a" key
-Then the player should move left
-- [X] Given the game is active and the player is in a scene
-When the player presses the right arrow button or the "d" key
-Then the player should move right
-- [X] Given the game is active and the player is in a scene
-When the player presses the down arrow button or the "s" key
-Then the player should move down
+- [X] Given a player is in the town (or the game is started)
+when they enter the door to the next dungeon,
+Then, there is a transition to a new scene with a procedurally
+generated dungeon.
+- [X] Given a new run is started
+When the dungeon is randomized
+The generation has random enemies, rooms, and loot drops.
 
-### Issue #_: Title Screen
+### Issue #12: Enemies
 
-- [X] Given the player launches the game
-When the player presses start
-Then the run begins
-- [ ] Given the player ends their run
-When the player presses start
-Then the next run begins
+- [X] Given the player moves into different rooms, as they enter a new room, enemies will spawn to attack them.
 
-### Issue #_: Mage Type
+### Issue #3: Health Bar
 
-- [X] Given the player starts a new run,
-When they are given the option between a Fire mage, Ice Mage, and Mind Mage,
-The player can choose one and their sprite is updated.
-- [ ] Given the player dies,
-Their chosen mage is reset and they can pick a new type.
+- [] Given the player is in a run
+When they consume a healing item
+Then the health bar increases by the amount of health gained
+- [ ] Given the player is in combat
+When they are attacked by an enemy
+Then the health bar decreases by the damage they took
 
-### Issue #_: Collision
+### Issue #19: Player Stats
 
-- [X] Given the player is in the game
-When they run into a wall
-Then they cannot continue forward
+- [X] Given the player starts a run,
+They are given a base stat in HP, Mana, Defense, and Speed.
+- [] Given the player finds a rare stat increasing loot,
+Their respective stat is permanently raised.
+- [X] Given the player selects a different mage type, when they start the game, then their base stats are unique.
+
+### Issue #16: Save/Load
+
+- [X] Given the player has beaten a dungeon,
+When the player goes to the settings and clicks "Save Game"
+The game saves to local storage.
+- [X] Given the player is in the menu and clicks "Load Game"
+When the player clicks on their save/inputs a code,
+The saved file loads and the player continues the file.
+
+### Issue #41: Dynamic Camera
+
+- [X] camera responds to player position
+        camera switches between rooms
 
 ---
 
@@ -125,17 +133,17 @@ Then they cannot continue forward
 
 | Issue # | What remains | New estimate | Back in backlog? |
 |---------|--------------|--------------|------------------|
-|   6      |    When the players run ends, they are taken back to the title screen          |     n/a         | [ ]              |
-|   8      |   When the player dies, they can select a new mage type           |    n/a          | [ ]              |
+|   3      |  Visible health bar       |     3         | [X]              |
+|   19      |  Stats screen, increase stats with loot       |    5     | [X]              |
 
-These are more an issue with acceptance criteria not being fully accurate, as the issues pertain more to the player dying which is a different story. The stories on their own work good.
+
 ---
 
 ## 7. Stakeholder Feedback
 
 *Record what the instructor said: what they liked, what should change, and any new priorities. (Sprint 4: write "n/a")* 
 
-_   They liked the wobbling title screen, they want to see differences between the mages to make it seem more like an RPG character with different hitpoints, etc.
+_   They liked the dungeon generation, they wanted the player stats to show and mage type to change appearance, and better graphics for the game.
 
 ---
 
@@ -143,13 +151,13 @@ _   They liked the wobbling title screen, they want to see differences between t
 
 *How did the backlog change in response to the feedback? (Sprint 4: write "n/a")*
 
-**New stories added:** _ We didn't need to add more stories
+**New stories added:** _ Graphics
 
-**Priorities changed:** _ We now know the next step should be to focus on the character
+**Priorities changed:** _ Focus on the overall appearance of the game.
 
 **Stories removed:** _ We didn't need to remove any stories
 
-**If no change was needed, why not?** _ We already have stories outlining additions to the character like the stats and health bar.
+**If no change was needed, why not?** _ Mostly no change because we need to move health bar and stats stories back to the backlog to finish them up.
 
 ---
 
@@ -159,7 +167,7 @@ _   They liked the wobbling title screen, they want to see differences between t
 
 **CI status on `production`:** Passing
 
-**Number of specs:** _ 5
+**Number of specs:** _ 1
 
 **Known bugs in the deployed build:** _ 0
 
