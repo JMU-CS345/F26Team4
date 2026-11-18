@@ -14,21 +14,21 @@ const EnemiesClass = Object.freeze({
 const MAGE_CLASS_STATS = Object.freeze({
     [MageClass.FIREMAGE]: Object.freeze({
         health: 100,
-        mana: 100,
+        mana: 200,
         attackPower: 100,
         spellPower: 15
     }),
     [MageClass.ICEMAGE]: Object.freeze({
         health: 140,
-        mana: 150,
+        mana: 250,
         attackPower: 80,
         spellPower: 10
     }),
     [MageClass.MINDMAGE]: Object.freeze({
         health: 80,
-        mana: 120,
-        attackPower: 70,
-        spellPower: 18
+        mana: 200,
+        attackPower: 90,
+        spellPower: 20
     })
 });
 
@@ -69,7 +69,8 @@ class Entity {
         xpos = 0,
         ypos = 0,
         radius = 15,
-        speed = 3
+        speed = 3,
+        critChance = 20
     }) {
         this.name = name;
         this.xpos = xpos;
@@ -83,6 +84,7 @@ class Entity {
         }
         this.attackPower = attackPower;
         this.spellPower = spellPower;
+        this.critChance = critChance;
     }
 
     move(dx, dy, level) {
