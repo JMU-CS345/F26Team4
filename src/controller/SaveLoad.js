@@ -2,30 +2,12 @@ let saveOne;
 let saveTwo;
 let saveThree;
 
-let gameState;
-
 function saveButtons() {
-    
-    gameState = [null, null, null];
 
-    storeItem("saveData", gameState);
-
-    let savedData = getItem("saveData");
-
-    if (savedData[0] !== null) {
-        mageType = savedData[0].mageType;
-    }
-    if (savedData[1] !== null) {
-        mageType = savedData[1].mageType;
-    }
-    if (savedData[2] !== null) {
-        mageType = savedData[2].mageType;
-    }
-
-    saveOne = createButton("Save One");
-    saveOne.position(width / 2 - saveOne.width / 2, height / 2 + 100);
-    saveOne.size(width / 6, height / 10);
-    saveOne.style("background-color", color(52, 235, 113));
+    saveOne = createButton("SAVE ONE");
+    saveOne.size(width / 5, height / 8);
+    saveOne.position(width / 2 - saveOne.width / 2, height * 1/4);
+    saveOne.style("background-color", color(66, 135, 245));
     saveOne.style("font-family", "Georgia")
     saveOne.style('border-radius', '8px'); 
     saveOne.style('cursor', 'pointer');
@@ -34,10 +16,10 @@ function saveButtons() {
         loadGame(0)
     });
 
-    saveTwo = createButton("Save Two");
-    saveTwo.position(width / 2 - saveTwo.width / 2, height / 2 + 50);
-    saveTwo.size(width / 6, height / 10);
-    saveTwo.style("background-color", color(52, 235, 113));
+    saveTwo = createButton("SAVE TWO");
+    saveTwo.size(width / 5, height / 8);
+    saveTwo.position(width / 2 - saveTwo.width / 2, height *  2/4);
+    saveTwo.style("background-color", color(138, 67, 209));
     saveTwo.style("font-family", "Georgia")
     saveTwo.style('border-radius', '8px'); 
     saveTwo.style('cursor', 'pointer');
@@ -46,10 +28,10 @@ function saveButtons() {
         loadGame(1)
     });
 
-    saveThree = createButton("Save Three");
-    saveThree.position(width / 2 - saveThree.width / 2, height / 2 + 0);
-    saveThree.size(width / 6, height / 10);
-    saveThree.style("background-color", color(52, 235, 113));
+    saveThree = createButton("SAVE THREE");
+    saveThree.size(width / 5, height / 8);
+    saveThree.position(width / 2 - saveThree.width / 2, height * 3/4);
+    saveThree.style("background-color", color(209, 56, 199));
     saveThree.style("font-family", "Georgia")
     saveThree.style('border-radius', '8px'); 
     saveThree.style('cursor', 'pointer');
@@ -60,17 +42,44 @@ function saveButtons() {
 }
 
 function saveGame(file) {
-    gameState[file] = {
+    let gameData = {
         mageType: mageType,
     }
 
-    storeItem("saveData", gameState);
+    if (file === 0) {
+        storeItem("saveOne", gameData);
+    } else if (file === 1) {
+        storeItem("saveTwo", gameData);
+    } else if (file === 2) {
+        storeItem("saveThree", gameData);
+    }
 }
 
 function loadGame(file) {
-    let savedData = getItem("saveData");
 
-    if (savedData[file] !== null) {
-        mageType = savedData[file].mageType;
+    let save = "";
+
+    if (file === 0) {
+        save = "saveOne";
+    } else if (file === 1) {
+        save = "saveTwo";
+    } else if (file === 2) {
+        save = "saveThree";
     }
+
+    let savedData = getItem(save);
+
+    if (savedData !== null) {
+        mageType = savedData.mageType;
+        gameState = "game";
+    } else {
+        fireButton.show();
+        iceButton.show();
+        mindButton.show();
+        gameState = "mageSelect";
+    }
+
+    saveOne.hide();
+    saveTwo.hide();
+    saveThree.hide();
 }

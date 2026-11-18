@@ -59,7 +59,7 @@ function drawMageSelect() {
 }
 
 function drawSaveFiles() {
-    saveButtons();
+    background(52, 203, 237);
 }
 
 /*function drawMainGame() {

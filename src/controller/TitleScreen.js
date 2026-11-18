@@ -52,8 +52,8 @@ function setup() {
     });
 
     newButton = createButton("NEW GAME");
-    newButton.position(width / 2 - newButton.width / 2, height / 2 + 50);
     newButton.size(width / 6, height / 10);
+    newButton.position(width / 2 - newButton.width / 2 - width / 5, height / 2 + 50);
     newButton.style("background-color", color(52, 235, 113));
     newButton.style("font-family", "Georgia")
     newButton.style('border-radius', '8px'); 
@@ -66,19 +66,20 @@ function setup() {
         fireButton.show();
         iceButton.show();
         mindButton.show();
-        gameState === "mageSelect";
+        gameState = "mageSelect";
     });
 
-    loadButton = createButton("LOAD");
-    loadButton.position(width / 2 - loadButton.width / 2, height / 2 + 50);
+    loadButton = createButton("LOAD GAME");
     loadButton.size(width / 6, height / 10);
-    loadButton.style("background-color", color(52, 235, 113));
+    loadButton.position(width / 2 - loadButton.width / 2 + width / 5, height / 2 + 50);
+    loadButton.style("background-color", color(92, 176, 255));
     loadButton.style("font-family", "Georgia")
     loadButton.style('border-radius', '8px'); 
     loadButton.style('cursor', 'pointer');
     loadButton.hide();
 
     loadButton.mousePressed(() => {
+        saveButtons();
         loadButton.hide();
         newButton.hide();
         gameState = "saveFiles";
