@@ -160,7 +160,7 @@ function drawDungeon() {
   playerController.update(level);
   updateEnemies();
   background(17, 23, 34);
-  dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls);
+  dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls, enemies, enemyView);
 
   push();
   noStroke();
