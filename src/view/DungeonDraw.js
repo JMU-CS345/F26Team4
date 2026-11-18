@@ -7,7 +7,7 @@ class DungeonView {
         this.traversedConnections = new Set();
     }
 
-    draw(dungeon, geometry, player, playerView, walls, enemy) {
+    draw(dungeon, geometry, player, playerView, walls, enemies, enemyView) {
 
         if (!dungeon || !Array.isArray(dungeon.rooms) || dungeon.rooms.length < 2 ||
             !Array.isArray(dungeon.connections) ||
@@ -15,7 +15,7 @@ class DungeonView {
             geometry.tunnels.length !== dungeon.connections.length ||
             !Number.isFinite(geometry.width) || geometry.width <= 0 ||
             !Number.isFinite(geometry.height) || geometry.height <= 0 ||
-            !player || !playerView ||
+            !player || !playerView || !Array.isArray(enemies) || !enemyView ||
             !Array.isArray(walls)) {
             throw new RangeError("The dungeon view requires rooms, connections, positioned tunnels, valid dimensions, a player, and walls");
         }
@@ -69,7 +69,11 @@ class DungeonView {
         for (const room of dungeon.rooms) {
             this.drawRoom(room, geometry.positions[room.id], zoom);
         }
+        
         this.drawWalls(walls);
+        for (const enemy of enemies) {
+        enemyView.draw(enemy);
+        }
         playerView.draw(player);
         pop();
 

@@ -6,6 +6,8 @@ let dungeonLayout;
 let dungeonView;
 let dungeonGeometry;
 let seedInput;
+let enemies = [];
+let enemyView;
 
 function setupDungeon(seed = Date.now(), options = {}) {
   dungeonLayout = DungeonGenorator.generate({
@@ -122,13 +124,41 @@ function setupDungeon(seed = Date.now(), options = {}) {
   );
   playerController = new PlayerController(player);
   playerView = new PlayerView();
+  enemyView = new EnemyView();
   dungeonView = new DungeonView();
+
+  // Create enemies at the spawn points in the generated rooms.
+  const enemyTypes = [
+    EnemiesClass.GOBLIN,
+    EnemiesClass.SKELETON,
+    EnemiesClass.EVILMAGE,
+    EnemiesClass.GHOST
+  ];
+  let enemyIndex = 0;
+
+  enemies = dungeonLayout.rooms.flatMap((room) => {
+    const roomPosition = positions[room.id];
+
+    return room.enemySpawnPoints.map((point) => {
+      const enemyType = enemyTypes[enemyIndex % enemyTypes.length];
+      enemyIndex += 1;
+
+      const enemy = new Enemy(
+        enemyType,
+        roomPosition.x + point.x,
+        roomPosition.y + point.y
+      );
+      enemy.speed = 0.6;
+      return enemy;
+    });
+  });
   seedInput.value(String(dungeonLayout.seed));
   seedInput.show();
 }
 
 function drawDungeon() {
   playerController.update(level);
+  updateEnemies();
   background(17, 23, 34);
   dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls);
 
@@ -141,4 +171,19 @@ function drawDungeon() {
   textSize(16);
   text("Seed:", 16, 24);
   pop();
+}
+
+function updateEnemies() {
+  const detectionRange = 220;
+
+  for (const enemy of enemies) {
+    const dx = player.xpos - enemy.xpos;
+    const dy = player.ypos - enemy.ypos;
+    const distance = Math.hypot(dx, dy);
+    const stopDistance = enemy.radius + player.radius + 2;
+
+    if (distance < detectionRange && distance > stopDistance) {
+      enemy.move(dx, dy, level);
+    }
+  }
 }
