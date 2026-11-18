@@ -7,7 +7,7 @@ class DungeonView {
         this.traversedConnections = new Set();
     }
 
-    draw(dungeon, geometry, player, playerView, walls) {
+    draw(dungeon, geometry, player, playerView, walls, enemy) {
 
         if (!dungeon || !Array.isArray(dungeon.rooms) || dungeon.rooms.length < 2 ||
             !Array.isArray(dungeon.connections) ||
