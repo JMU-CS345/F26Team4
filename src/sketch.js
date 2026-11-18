@@ -122,6 +122,33 @@ function setupDungeon(seed = Date.now(), options = {}) {
     startPosition.x + startRoom.width / 2,
     startPosition.y + startRoom.height / 2
   );
+  const enemyTypes = [
+    EnemiesClass.GOBLIN,
+    EnemiesClass.SKELETON,
+    EnemiesClass.EVILMAGE,
+    EnemiesClass.GHOST
+  ];
+  let enemyIndex = 0;
+
+  enemies = dungeonLayout.rooms.flatMap((room) => {
+    const roomPosition = positions[room.id];
+
+    return room.enemySpawnPoints.map((point) => {
+      const enemyType = enemyTypes[enemyIndex % enemyTypes.length];
+      enemyIndex += 1;
+
+      const enemy = new Enemy(
+        enemyType,
+        roomPosition.x + point.x,
+        roomPosition.y + point.y
+      );
+      enemy.speed = 0.6;
+      return enemy;
+    });
+  });
+  seedInput.value(String(dungeonLayout.seed));
+  seedInput.show();
+
 }
 
 
