@@ -1,6 +1,7 @@
 function drawOptionsMenu() {
     createCanvas(800, 600);
     background(220);
+    fill(0,0,0);
     textSize(24);
     text("Health: " + player.health, 100, height - 570);
     textSize(24);
