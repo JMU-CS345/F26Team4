@@ -41,7 +41,7 @@ function setupDungeon(seed = Date.now(), options = {}) {
     const toPosition = positions[toRoom.id];
     const horizontal = connection.fromSide === "east" || connection.fromSide === "west";
     if (horizontal && fromTunnel.height !== toTunnel.height ||
-        !horizontal && fromTunnel.width !== toTunnel.width) {
+      !horizontal && fromTunnel.width !== toTunnel.width) {
       throw new RangeError("Connected room tunnel openings must have matching widths");
     }
 
@@ -122,9 +122,48 @@ function setupDungeon(seed = Date.now(), options = {}) {
     startPosition.x + startRoom.width / 2,
     startPosition.y + startRoom.height / 2
   );
+}
 
 
-function setupMovement() {
+function drawDungeon() {
+  playerController.update(level);
+  updateEnemies();
+  background(17, 23, 34);
+  dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls, enemies, enemyView);
+
+  push();
+  noStroke();
+  fill(17, 23, 34, 220);
+  rect(8, 8, 205, 32, 6);
+  fill(255);
+  textAlign(LEFT, CENTER);
+  textSize(16);
+  text("Seed:", 16, 24);
+  pop();
+  OptionsButton.show()
+
+  fill(0, 0, 0);
+  textSize(15)
+  if (player.health >= 0) {
+    drawHealthBar(25, height - 30, 220, 22, player.health, player.maxHealth);
+    text("Health: " + player.health, 70, height - 20);
+  }
+  else {
+    drawHealthBar(25, height - 30, 220, 22, 0, player.maxHealth);
+    text("Health: 0", 70, height - 20);
+  }
+
+  if (player.mana >= 0) {
+    drawManaBar(250, height - 30, 220, 22, player.mana, player.maxMana);
+    text("Mana: " + player.mana, 290, height - 20);
+  }
+  else {
+    drawManaBar(250, height - 30, 220, 22, 0, player.maxMana);
+    text("Mana: 0", 290, height - 20);
+  }
+}
+
+/*function setupMovement() {
   createCanvas(800, 600);
 
   const walls = [
@@ -134,19 +173,13 @@ function setupMovement() {
   ];
 
   level = new Level(width, height, walls);
-  player = new Player(mageType, "Mage", 100, 100);
-  playerController = new PlayerController(player);
-  playerView = new PlayerView();
+  
   wallView = new WallView();
 
-}
+}*/
 
-function drawMainGame() {
-  background(220);
-
+/*function drawMainGame() {
   OptionsButton.show()
-
-  playerView.draw(player);
 
   fill(0, 0, 0);
   textSize(15)
@@ -168,23 +201,7 @@ function drawMainGame() {
     text("Mana: 0", 290, height - 20);
   }
 
-
-
-  playerController.update(level);
-  updateEnemies();
-  background(17, 23, 34);
-  dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls, enemies, enemyView);
-
-  push();
-  noStroke();
-  fill(17, 23, 34, 220);
-  rect(8, 8, 205, 32, 6);
-  fill(255);
-  textAlign(LEFT, CENTER);
-  textSize(16);
-  text("Seed:", 16, 24);
-  pop();
-}
+}*/
 
 function updateEnemies() {
   const detectionRange = 220;
@@ -202,10 +219,9 @@ function updateEnemies() {
 }
 
 
-  for (const wall of level.walls) {
-    wallView.draw(wall);
-  }
+/*for (const wall of level.walls) {
+  wallView.draw(wall);
+}*/
 
 
 
-}

@@ -154,9 +154,9 @@ function setup() {
         gameState = "saveFiles";
     });
 
-    generateDungeonButton.mousePressed(() => {
+    /*generateDungeonButton.mousePressed(() => {
         selectMage(mageType || "fire");
-    });
+    });*/
 
     generateSeedDungeonButton.mousePressed(() => {
         const seed = seedEntryInput.value().trim();
@@ -164,7 +164,7 @@ function setup() {
             mageSelectError = "Enter a seed to generate a dungeon.";
             return;
         }
-        selectMage(mageType || "fire", seed);
+        //selectMage(mageType || "fire", seed);
     });
 
     generateDungeonButton.hide();
@@ -181,7 +181,7 @@ function draw() {
         drawMageSelect();
     } else if (gameState === "game") {
         drawDungeon();
-    } else if (gameState == "stats") {
+    } else if (gameState === "stats") {
         drawOptionsMenu()
     }
 }

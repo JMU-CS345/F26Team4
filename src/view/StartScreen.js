@@ -88,8 +88,15 @@ function drawSaveFiles() {
 function selectMage(type, seed = Date.now()) {
     mageType = type;
     mageSelectError = "";
+
+
     try {
         setupDungeon(seed);
+        //player = new Player(mageType, "Mage", 100, 100);
+        playerController = new PlayerController(player);
+        playerView = new PlayerView();
+        enemyView = new EnemyView();
+        dungeonView = new DungeonView();
         startButton.hide();
         generateDungeonButton.hide();
         seedEntryInput.hide();
@@ -104,50 +111,51 @@ function selectMage(type, seed = Date.now()) {
         console.error("Could not start the dungeon:", error);
         mageSelectError = `Could not generate dungeon: ${error.message}`;
     }
-    fireButton.hide();
+
+    /*fireButton.hide();
     iceButton.hide();
     mindButton.hide();
-    setupMovement();
-    gameState = "game";
+   // setupMovement();
+    gameState = "game";*/
     console.log("Selected:", mageType);
-    
+
 }
 
 function drawHealthBar(x, y, w, h, health, maxHealth) {
-  // background (empty) bar
-  fill(60, 60, 60);
-  noStroke();
-  rect(x, y, w, h);
+    // background (empty) bar
+    fill(60, 60, 60);
+    noStroke();
+    rect(x, y, w, h);
 
-  // health portion, proportional
-  const ratio = Math.max(0, health) / maxHealth;
-  const healthColor = ratio > 0.5 ? [76, 175, 80]
-                    : ratio > 0.25 ? [255, 193, 7]
-                    : [244, 67, 54];
-  fill(healthColor[0], healthColor[1], healthColor[2]);
-  rect(x, y, w * ratio, h);
+    // health portion, proportional
+    const ratio = Math.max(0, health) / maxHealth;
+    const healthColor = ratio > 0.5 ? [76, 175, 80]
+        : ratio > 0.25 ? [255, 193, 7]
+            : [244, 67, 54];
+    fill(healthColor[0], healthColor[1], healthColor[2]);
+    rect(x, y, w * ratio, h);
 
-  // border
-  stroke(0);
-  strokeWeight(2);
-  noFill();
-  rect(x, y, w, h);
+    // border
+    stroke(0);
+    strokeWeight(2);
+    noFill();
+    rect(x, y, w, h);
 }
 
 function drawManaBar(x, y, w, h, mana, maxMana) {
-  // background (empty) bar
-  fill(60, 60, 60);
-  noStroke();
-  rect(x, y, w, h);
+    // background (empty) bar
+    fill(60, 60, 60);
+    noStroke();
+    rect(x, y, w, h);
 
-  // mana portion, proportional
-  const ratio = Math.max(0, mana) / maxMana;
-  fill(12, 200, 250);
-  rect(x, y, w  * ratio, h);
+    // mana portion, proportional
+    const ratio = Math.max(0, mana) / maxMana;
+    fill(12, 200, 250);
+    rect(x, y, w * ratio, h);
 
-  // border
-  stroke(0);
-  strokeWeight(2);
-  noFill();
-  rect(x, y, w, h);
+    // border
+    stroke(0);
+    strokeWeight(2);
+    noFill();
+    rect(x, y, w, h);
 }
