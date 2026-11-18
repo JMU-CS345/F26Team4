@@ -75,7 +75,8 @@ class Entity {
         xpos = 0,
         ypos = 0,
         radius = 15,
-        speed = 3
+        speed = 3,
+        critChance = 20
     }) {
         this.name = name;
         this.xpos = xpos;
@@ -90,6 +91,7 @@ class Entity {
         }
         this.attackPower = attackPower;
         this.spellPower = spellPower;
+        this.critChance = critChance;
     }
 
     move(dx, dy, level) {

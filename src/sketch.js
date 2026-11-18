@@ -1,18 +1,26 @@
 let player;
 let playerController;
 let playerView;
-let wallView;
 let level;
+let dungeonLayout;
+let dungeonView;
+let dungeonGeometry;
+let seedInput;
+let enemies = [];
+let enemyView;
 
 
 function setupMovement() {
   createCanvas(800, 600);
 
-  const walls = [
-    new Wall(200, 150, 300, 25),
-    new Wall(500, 300, 25, 180),
-    new Wall(150, 400, 200, 25)
-  ];
+  const positions = Object.fromEntries(dungeonLayout.rooms.map((room) => [
+    room.id,
+    {
+      x: room.gridPosition.x * DungeonRooms.gridCellSize,
+      y: room.gridPosition.y * DungeonRooms.gridCellSize
+    }
+  ]));
+  const tunnels = [];
 
   level = new Level(width, height, walls);
   player = new Player(mageType, "Mage", 100, 100);
@@ -22,8 +30,13 @@ function setupMovement() {
 
 }
 
-function drawMainGame() {
-  background(220);
+    const fromPosition = positions[fromRoom.id];
+    const toPosition = positions[toRoom.id];
+    const horizontal = connection.fromSide === "east" || connection.fromSide === "west";
+    if (horizontal && fromTunnel.height !== toTunnel.height ||
+        !horizontal && fromTunnel.width !== toTunnel.width) {
+      throw new RangeError("Connected room tunnel openings must have matching widths");
+    }
 
   OptionsButton.show()
 
@@ -59,4 +72,4 @@ function drawMainGame() {
 
 
 
-}
+
