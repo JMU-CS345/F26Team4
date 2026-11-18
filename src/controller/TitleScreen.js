@@ -4,6 +4,7 @@ let fireButton;
 let iceButton;
 let mindButton;
 let mageType;
+let ButCount = 0;
 
 function setup() {
     createCanvas(600, 400);
@@ -36,9 +37,20 @@ function setup() {
     mindButton.style('border-radius', '12px');
 
     CreateOptionsButton()
+    // OptionsButton.mousePressed(() => {
+    //     gameState = "stats"
+
     OptionsButton.mousePressed(() => {
+    if (gameState === "game") {
         gameState = "stats";
+    }
+    else if (gameState === "stats") {
+        gameState = "game";
+    }
     });
+
+
+
 
     fireButton.mousePressed(() => { selectMage(MageClass.FIREMAGE) });
     iceButton.mousePressed(() => { selectMage(MageClass.ICEMAGE) });
