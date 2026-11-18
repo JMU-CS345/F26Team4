@@ -1,37 +1,88 @@
 let gameState = "title";
 let startButton;
+let generateDungeonButton;
+let seedEntryInput;
+let generateSeedDungeonButton;
 let fireButton;
 let iceButton;
 let mindButton;
 let mageType;
+let mageSelectError = "";
+
+let newButton;
+let loadButton;
 
 function setup() {
-    createCanvas(600, 400);
+    createCanvas(windowWidth, windowHeight);
     fill(0)
 
+    seedInput = createInput("");
+    seedInput.attribute("readonly", "");
+    seedInput.attribute("aria-label", "Dungeon seed. Select to copy.");
+    seedInput.position(60, 12);
+    seedInput.size(145, 24);
+    seedInput.style("box-sizing", "border-box");
+    seedInput.style("font-family", "monospace");
+    seedInput.style("font-size", "14px");
+    seedInput.style("color", "#ffffff");
+    seedInput.style("background-color", "#111722");
+    seedInput.style("border", "1px solid #718096");
+    seedInput.style("border-radius", "4px");
+    seedInput.mousePressed(() => seedInput.elt.select());
+    seedInput.hide();
+
+    const menuButtonWidth = Math.min(180, width - 32);
     startButton = createButton("START GAME");
-    startButton.position(width / 2 - startButton.width / 2, height / 2 + 50);
-    startButton.size(width / 6, height / 10);
+    startButton.size(menuButtonWidth, 40);
+    startButton.position((width - menuButtonWidth) / 2, height * 0.58);
     startButton.style("background-color", color(52, 235, 113));
     startButton.style("font-family", "Georgia")
     startButton.style('border-radius', '8px'); 
     startButton.style('cursor', 'pointer');
-    
+
+    generateDungeonButton = createButton("GENERATE DUNGEON");
+    generateDungeonButton.size(menuButtonWidth, 40);
+    generateDungeonButton.position((width - menuButtonWidth) / 2, height * 0.68);
+    generateDungeonButton.style("background-color", color(52, 180, 235));
+    generateDungeonButton.style("font-family", "Georgia");
+    generateDungeonButton.style("border-radius", "8px");
+    generateDungeonButton.style("cursor", "pointer");
+
+    seedEntryInput = createInput("");
+    seedEntryInput.attribute("aria-label", "Enter a dungeon seed");
+    seedEntryInput.attribute("placeholder", "Enter seed");
+    seedEntryInput.position((width - menuButtonWidth) / 2, height * 0.76);
+    seedEntryInput.size(menuButtonWidth, 34);
+    seedEntryInput.style("box-sizing", "border-box");
+    seedEntryInput.input(() => {
+        mageSelectError = "";
+    });
+
+    generateSeedDungeonButton = createButton("GENERATE FROM SEED");
+    generateSeedDungeonButton.size(menuButtonWidth, 40);
+    generateSeedDungeonButton.position((width - menuButtonWidth) / 2, height * 0.83);
+    generateSeedDungeonButton.style("background-color", color(180, 130, 235));
+    generateSeedDungeonButton.style("font-family", "Georgia");
+    generateSeedDungeonButton.style("border-radius", "8px");
+    generateSeedDungeonButton.style("cursor", "pointer");
+
     fireButton = createButton("Fire Mage");
-    fireButton.position(width / 8, height / 2 + 75);
-    fireButton.size(100, 25);
+    const mageButtonWidth = Math.min(100, (width - 32) / 3);
+    const mageButtonGap = (width - mageButtonWidth * 3) / 4;
+    fireButton.position(mageButtonGap, height / 2 + 75);
+    fireButton.size(mageButtonWidth, 25);
     fireButton.style('background-color', '#db2626');
     fireButton.style('border-radius', '12px');
 
     iceButton = createButton("Ice Mage");
-    iceButton.position(width / 3 + 50, height / 2 + 75);
-    iceButton.size(100, 25);
+    iceButton.position(mageButtonGap * 2 + mageButtonWidth, height / 2 + 75);
+    iceButton.size(mageButtonWidth, 25);
     iceButton.style('background-color', '#58f8fd');
     iceButton.style('border-radius', '12px');
 
     mindButton = createButton("Mind Mage");
-    mindButton.position(width / 2 + 125, height / 2 + 75);
-    mindButton.size(100, 25);
+    mindButton.position(mageButtonGap * 3 + mageButtonWidth * 2, height / 2 + 75);
+    mindButton.size(mageButtonWidth, 25);
     mindButton.style('background-color', '#af4c4c');
     mindButton.style('border-radius', '12px');
 
@@ -44,19 +95,74 @@ function setup() {
 
     startButton.mousePressed(() => {
         startButton.hide();
+        newButton.show();
+        loadButton.show();
+    });
+
+    newButton = createButton("NEW GAME");
+    newButton.size(width / 6, height / 10);
+    newButton.position(width / 2 - newButton.width / 2 - width / 5, height / 2 + 50);
+    newButton.style("background-color", color(52, 235, 113));
+    newButton.style("font-family", "Georgia")
+    newButton.style('border-radius', '8px'); 
+    newButton.style('cursor', 'pointer');
+    newButton.hide();
+
+    newButton.mousePressed(() => {
+        generateDungeonButton.hide();
+        seedEntryInput.hide();
+        generateSeedDungeonButton.hide();
+        mageSelectError = "";
+        newButton.hide();
+        loadButton.hide();
         fireButton.show();
         iceButton.show();
         mindButton.show();
         gameState = "mageSelect";
     });
+
+    loadButton = createButton("LOAD GAME");
+    loadButton.size(width / 6, height / 10);
+    loadButton.position(width / 2 - loadButton.width / 2 + width / 5, height / 2 + 50);
+    loadButton.style("background-color", color(92, 176, 255));
+    loadButton.style("font-family", "Georgia")
+    loadButton.style('border-radius', '8px'); 
+    loadButton.style('cursor', 'pointer');
+    loadButton.hide();
+
+    loadButton.mousePressed(() => {
+        saveButtons("LOAD");
+        loadButton.hide();
+        newButton.hide();
+        gameState = "saveFiles";
+    });
+
+    generateDungeonButton.mousePressed(() => {
+        selectMage(mageType || "fire");
+    });
+
+    generateSeedDungeonButton.mousePressed(() => {
+        const seed = seedEntryInput.value().trim();
+        if (seed.length === 0) {
+            mageSelectError = "Enter a seed to generate a dungeon.";
+            return;
+        }
+        selectMage(mageType || "fire", seed);
+    });
+
+    generateDungeonButton.hide();
+    generateSeedDungeonButton.hide();
+    seedEntryInput.hide();
 }
 
 function draw() {
     if (gameState === "title") {
         drawTitleScreen();
+    } else if (gameState === "saveFiles") {
+        drawSaveFiles();
     } else if (gameState === "mageSelect") {
         drawMageSelect();
     } else if (gameState === "game") {
-        drawMainGame();
+        drawDungeon();
     }
 }

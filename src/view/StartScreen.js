@@ -47,6 +47,14 @@ function drawTitleScreen() {
     strokeWeight(6);
     text("MageQuest", 0, 0);
     pop();
+
+    if (mageSelectError) {
+        fill(255);
+        noStroke();
+        textAlign(CENTER, CENTER);
+        textSize(16);
+        text(mageSelectError, width / 2, height * 0.92);
+    }
 }
 
 function drawMageSelect() {
@@ -56,6 +64,16 @@ function drawMageSelect() {
     textSize(48);
     text("Choose a Mage Type", width / 2, height / 3);
 
+    if (mageSelectError) {
+        fill(255);
+        textSize(16);
+        text(mageSelectError, width / 2, height * 0.72);
+    }
+
+}
+
+function drawSaveFiles() {
+    background(52, 203, 237);
 }
 
 /*function drawMainGame() {
@@ -81,12 +99,23 @@ function drawMageSelect() {
 
 
 
-function selectMage(type) {
+function selectMage(type, seed = Date.now()) {
     mageType = type;
-    fireButton.hide();
-    iceButton.hide();
-    mindButton.hide();
-    setupMovement();
-    gameState = "game";
-    console.log("Selected:", mageType);
+    mageSelectError = "";
+    try {
+        setupDungeon(seed);
+        startButton.hide();
+        generateDungeonButton.hide();
+        seedEntryInput.hide();
+        generateSeedDungeonButton.hide();
+        fireButton.hide();
+        iceButton.hide();
+        mindButton.hide();
+        gameState = "game";
+        console.log("Selected:", mageType);
+        saveButton();
+    } catch (error) {
+        console.error("Could not start the dungeon:", error);
+        mageSelectError = `Could not generate dungeon: ${error.message}`;
+    }
 }

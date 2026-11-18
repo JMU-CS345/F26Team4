@@ -48,7 +48,7 @@ _
 
 | Issue # | User story | Estimate | Owner | Ready? |
 |---------|------------|----------|-------|--------|
-|   1      |   Player movement         |   2       |   Liam    | [X]    |
+|   1      |   Player movement         |   2       |   Mark    | [X]    |
 |  6       |    Title screen        |    5      |  Jonah     | [X]    |
 |   8      |    Mage type        |   3       |   Devin    | [X]    |
 |    23     |   Collision with walls         |   5       |  Liam     | [X]    |

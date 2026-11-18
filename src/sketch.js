@@ -1,33 +1,189 @@
 let player;
 let playerController;
 let playerView;
-let wallView;
 let level;
+let dungeonLayout;
+let dungeonView;
+let dungeonGeometry;
+let seedInput;
+let enemies = [];
+let enemyView;
 
-function setupMovement () {
-  createCanvas(800, 600);
+function setupDungeon(seed = Date.now(), options = {}) {
+  dungeonLayout = DungeonGenorator.generate({
+    seed,
+    ...options,
+    roomCount: 10
+  });
 
-  const walls = [
-    new Wall(200, 150, 300, 25),
-    new Wall(500, 300, 25, 180),
-    new Wall(150, 400, 200, 25)
-  ];
+  const positions = Object.fromEntries(dungeonLayout.rooms.map((room) => [
+    room.id,
+    {
+      x: room.gridPosition.x * DungeonRooms.gridCellSize,
+      y: room.gridPosition.y * DungeonRooms.gridCellSize
+    }
+  ]));
+  const tunnels = [];
 
-  level = new Level(width, height, walls);
-  player = new Player(mageType, "Mage", 100, 100);
-  playerController = new PlayerController(player);
-  playerView = new PlayerView();
-  wallView = new WallView();
-}
+  for (const connection of dungeonLayout.connections) {
+    const fromRoom = dungeonLayout.rooms.find((room) => room.id === connection.fromRoomId);
+    const toRoom = dungeonLayout.rooms.find((room) => room.id === connection.toRoomId);
+    if (!fromRoom || !toRoom) {
+      throw new RangeError("Generated connections must reference existing rooms");
+    }
+    const fromTunnel = fromRoom.tunnels.find((tunnel) => tunnel.side === connection.fromSide);
+    const toTunnel = toRoom.tunnels.find((tunnel) => tunnel.side === connection.toSide);
+    if (!fromTunnel || !toTunnel) {
+      throw new RangeError("Connected rooms must contain the selected tunnel sides");
+    }
 
-function drawMainGame() {
-  background(220);
+    const fromPosition = positions[fromRoom.id];
+    const toPosition = positions[toRoom.id];
+    const horizontal = connection.fromSide === "east" || connection.fromSide === "west";
+    if (horizontal && fromTunnel.height !== toTunnel.height ||
+        !horizontal && fromTunnel.width !== toTunnel.width) {
+      throw new RangeError("Connected room tunnel openings must have matching widths");
+    }
 
-  playerController.update(level);
-
-  for (const wall of level.walls) {
-    wallView.draw(wall);
+    if (connection.fromSide === "east") {
+      tunnels.push({
+        x: fromPosition.x + fromRoom.width,
+        y: fromPosition.y + fromTunnel.y,
+        width: fromTunnel.length + toTunnel.length,
+        height: fromTunnel.height
+      });
+    } else if (connection.fromSide === "west") {
+      tunnels.push({
+        x: toPosition.x + toRoom.width,
+        y: fromPosition.y + fromTunnel.y,
+        width: fromTunnel.length + toTunnel.length,
+        height: fromTunnel.height
+      });
+    } else if (connection.fromSide === "south") {
+      tunnels.push({
+        x: fromPosition.x + fromTunnel.x,
+        y: fromPosition.y + fromRoom.height,
+        width: fromTunnel.width,
+        height: fromTunnel.length + toTunnel.length
+      });
+    } else {
+      tunnels.push({
+        x: fromPosition.x + fromTunnel.x,
+        y: toPosition.y + toRoom.height,
+        width: fromTunnel.width,
+        height: fromTunnel.length + toTunnel.length
+      });
+    }
   }
 
-  playerView.draw(player);
+  const worldWalls = dungeonLayout.rooms.flatMap((room) => {
+    const position = positions[room.id];
+    return room.walls.map((wall) => new Wall(
+      position.x + wall.xpos,
+      position.y + wall.ypos,
+      wall.width,
+      wall.height
+    ));
+  });
+  const visibleWalls = [...worldWalls];
+  for (const [index, tunnel] of tunnels.entries()) {
+    const connection = dungeonLayout.connections[index];
+    const fromRoom = dungeonLayout.rooms.find((room) => room.id === connection.fromRoomId);
+    const toRoom = dungeonLayout.rooms.find((room) => room.id === connection.toRoomId);
+    const tunnelWallThickness = Math.min(fromRoom.gridCellSize, toRoom.gridCellSize);
+    const horizontal = tunnel.width > tunnel.height;
+    const tunnelWalls = horizontal
+      ? [
+        new Wall(tunnel.x, tunnel.y - tunnelWallThickness, tunnel.width, tunnelWallThickness),
+        new Wall(tunnel.x, tunnel.y + tunnel.height, tunnel.width, tunnelWallThickness)
+      ]
+      : [
+        new Wall(tunnel.x - tunnelWallThickness, tunnel.y, tunnelWallThickness, tunnel.height),
+        new Wall(tunnel.x + tunnel.width, tunnel.y, tunnelWallThickness, tunnel.height)
+      ];
+    worldWalls.push(...tunnelWalls);
+    visibleWalls.push(...tunnelWalls);
+  }
+
+  const width = Math.max(...dungeonLayout.rooms.map((room) =>
+    positions[room.id].x + room.width
+  ));
+  const height = Math.max(...dungeonLayout.rooms.map((room) =>
+    positions[room.id].y + room.height
+  ));
+  dungeonGeometry = { positions, tunnels, visibleWalls, width, height };
+  level = new Level(width, height, worldWalls);
+
+  const startRoom = dungeonLayout.rooms[0];
+  const startPosition = positions[startRoom.id];
+  player = new Player(
+    mageType,
+    "Mage",
+    startPosition.x + startRoom.width / 2,
+    startPosition.y + startRoom.height / 2
+  );
+  playerController = new PlayerController(player);
+  playerView = new PlayerView();
+  enemyView = new EnemyView();
+  dungeonView = new DungeonView();
+
+  // Create enemies at the spawn points in the generated rooms.
+  const enemyTypes = [
+    EnemiesClass.GOBLIN,
+    EnemiesClass.SKELETON,
+    EnemiesClass.EVILMAGE,
+    EnemiesClass.GHOST
+  ];
+  let enemyIndex = 0;
+
+  enemies = dungeonLayout.rooms.flatMap((room) => {
+    const roomPosition = positions[room.id];
+
+    return room.enemySpawnPoints.map((point) => {
+      const enemyType = enemyTypes[enemyIndex % enemyTypes.length];
+      enemyIndex += 1;
+
+      const enemy = new Enemy(
+        enemyType,
+        roomPosition.x + point.x,
+        roomPosition.y + point.y
+      );
+      enemy.speed = 0.6;
+      return enemy;
+    });
+  });
+  seedInput.value(String(dungeonLayout.seed));
+  seedInput.show();
+}
+
+function drawDungeon() {
+  playerController.update(level);
+  updateEnemies();
+  background(17, 23, 34);
+  dungeonView.draw(dungeonLayout, dungeonGeometry, player, playerView, dungeonGeometry.visibleWalls, enemies, enemyView);
+
+  push();
+  noStroke();
+  fill(17, 23, 34, 220);
+  rect(8, 8, 205, 32, 6);
+  fill(255);
+  textAlign(LEFT, CENTER);
+  textSize(16);
+  text("Seed:", 16, 24);
+  pop();
+}
+
+function updateEnemies() {
+  const detectionRange = 220;
+
+  for (const enemy of enemies) {
+    const dx = player.xpos - enemy.xpos;
+    const dy = player.ypos - enemy.ypos;
+    const distance = Math.hypot(dx, dy);
+    const stopDistance = enemy.radius + player.radius + 2;
+
+    if (distance < detectionRange && distance > stopDistance) {
+      enemy.move(dx, dy, level);
+    }
+  }
 }
