@@ -2,7 +2,21 @@ let saveOne;
 let saveTwo;
 let saveThree;
 
-function saveButtons() {
+function saveButton() {
+    let save = createButton("SAVE");
+    save.size(width / 16, height / 20);
+    save.position(0, save.height);
+    save.style("background-color", color(210, 247, 232));
+    save.style("font-family", "Georgia")
+    save.style('border-radius', '8px'); 
+    save.style('cursor', 'pointer');
+
+    save.mousePressed(() => {
+        saveButtons();
+    });
+}
+
+function saveButtons(action) {
 
     saveOne = createButton("SAVE ONE");
     saveOne.size(width / 5, height / 8);
@@ -13,7 +27,11 @@ function saveButtons() {
     saveOne.style('cursor', 'pointer');
 
     saveOne.mousePressed(() => {
-        loadGame(0)
+        if (action === "LOAD") {
+            loadGame(0);
+        } else {
+            saveGame(0);
+        }
     });
 
     saveTwo = createButton("SAVE TWO");
@@ -25,7 +43,11 @@ function saveButtons() {
     saveTwo.style('cursor', 'pointer');
 
     saveTwo.mousePressed(() => {
-        loadGame(1)
+        if (action === "LOAD") {
+            loadGame(1);
+        } else {
+            saveGame(1);
+        }
     });
 
     saveThree = createButton("SAVE THREE");
@@ -37,13 +59,18 @@ function saveButtons() {
     saveThree.style('cursor', 'pointer');
 
     saveThree.mousePressed(() => {
-        loadGame(2)
+        if (action === "LOAD") {
+            loadGame(2);
+        } else {
+            saveGame(2);
+        }
     });
 }
 
 function saveGame(file) {
     let gameData = {
         mageType: mageType,
+        seed: dungeonLayout.seed,
     }
 
     if (file === 0) {
@@ -53,6 +80,10 @@ function saveGame(file) {
     } else if (file === 2) {
         storeItem("saveThree", gameData);
     }
+
+    saveOne.hide();
+    saveTwo.hide();
+    saveThree.hide();
 }
 
 function loadGame(file) {
@@ -71,7 +102,7 @@ function loadGame(file) {
 
     if (savedData !== null) {
         mageType = savedData.mageType;
-        gameState = "game";
+        selectMage(mageType, savedData.seed);
     } else {
         fireButton.show();
         iceButton.show();

@@ -113,6 +113,7 @@ function selectMage(type, seed = Date.now()) {
         mindButton.hide();
         gameState = "game";
         console.log("Selected:", mageType);
+        saveButton();
     } catch (error) {
         console.error("Could not start the dungeon:", error);
         mageSelectError = `Could not generate dungeon: ${error.message}`;

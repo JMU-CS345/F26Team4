@@ -8,6 +8,7 @@ class DungeonView {
     }
 
     draw(dungeon, geometry, player, playerView, walls) {
+
         if (!dungeon || !Array.isArray(dungeon.rooms) || dungeon.rooms.length < 2 ||
             !Array.isArray(dungeon.connections) ||
             !geometry || !geometry.positions || !Array.isArray(geometry.tunnels) ||
