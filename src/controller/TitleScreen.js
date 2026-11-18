@@ -9,6 +9,9 @@ let mindButton;
 let mageType;
 let mageSelectError = "";
 
+let newButton;
+let loadButton;
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     fill(0)
@@ -92,14 +95,46 @@ function setup() {
 
     startButton.mousePressed(() => {
         startButton.hide();
+        newButton.show();
+        loadButton.show();
+    });
+
+    newButton = createButton("NEW GAME");
+    newButton.size(width / 6, height / 10);
+    newButton.position(width / 2 - newButton.width / 2 - width / 5, height / 2 + 50);
+    newButton.style("background-color", color(52, 235, 113));
+    newButton.style("font-family", "Georgia")
+    newButton.style('border-radius', '8px'); 
+    newButton.style('cursor', 'pointer');
+    newButton.hide();
+
+    newButton.mousePressed(() => {
         generateDungeonButton.hide();
         seedEntryInput.hide();
         generateSeedDungeonButton.hide();
         mageSelectError = "";
+        newButton.hide();
+        loadButton.hide();
         fireButton.show();
         iceButton.show();
         mindButton.show();
         gameState = "mageSelect";
+    });
+
+    loadButton = createButton("LOAD GAME");
+    loadButton.size(width / 6, height / 10);
+    loadButton.position(width / 2 - loadButton.width / 2 + width / 5, height / 2 + 50);
+    loadButton.style("background-color", color(92, 176, 255));
+    loadButton.style("font-family", "Georgia")
+    loadButton.style('border-radius', '8px'); 
+    loadButton.style('cursor', 'pointer');
+    loadButton.hide();
+
+    loadButton.mousePressed(() => {
+        saveButtons("LOAD");
+        loadButton.hide();
+        newButton.hide();
+        gameState = "saveFiles";
     });
 
     generateDungeonButton.mousePressed(() => {
@@ -114,11 +149,17 @@ function setup() {
         }
         selectMage(mageType || "fire", seed);
     });
+
+    generateDungeonButton.hide();
+    generateSeedDungeonButton.hide();
+    seedEntryInput.hide();
 }
 
 function draw() {
     if (gameState === "title") {
         drawTitleScreen();
+    } else if (gameState === "saveFiles") {
+        drawSaveFiles();
     } else if (gameState === "mageSelect") {
         drawMageSelect();
     } else if (gameState === "game") {
